@@ -55,7 +55,7 @@ jobs:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           scopedRegistryUrl: https://registry.npmjs.org/
-          registryScopes: 'et, ep'
+          registryScopes: 'org.eframework'
           testMode: ${{ matrix.testMode }}
           artifactsPath: Results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
