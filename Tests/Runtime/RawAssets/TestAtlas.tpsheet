@@ -1,0 +1,8 @@
+:format=40300
+:texture=TestAtlas.png
+:size=512x512
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+Square;1;255;256;256; 0.5;0.5; 0;0;0;0; 4;256;0;0;0;0;256;256;256; 2;1;2;3;0;1;3

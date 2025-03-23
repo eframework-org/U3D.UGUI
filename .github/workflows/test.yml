@@ -1,0 +1,71 @@
+name: 单元测试
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      test_passed:
+        description: "测试是否通过"
+        value: ${{ jobs.test.outputs.passed }}
+    secrets:
+      UNITY_LICENSE:
+        required: true
+      UNITY_EMAIL:
+        required: true
+      UNITY_PASSWORD:
+        required: true
+
+permissions:
+  checks: write
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  test:
+    name: 测试 ${{ matrix.testMode }} 环境
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - Package
+        unityVersion: [6000.0.32f1]
+        testMode: [PlayMode]
+    outputs:
+      passed: ${{ steps.tests.conclusion == 'success' }}
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          path: Package
+
+      - name: 运行测试
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        env:
+          TZ: 'Asia/Shanghai'
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          packageMode: true
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          scopedRegistryUrl: https://registry.npmjs.org/
+          registryScopes: 'et, ep'
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: Results
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: 测试 ${{ matrix.testMode }} 报告
+          useHostNetwork: true
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Test.${{ matrix.testMode }}.Reports
+          path: ${{ steps.tests.outputs.artifactsPath }}
+          retention-days: 14

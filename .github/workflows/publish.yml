@@ -1,0 +1,157 @@
+name: 版本发布
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: '请输入仓库名 (owner/repo) 以确认发布'
+        required: true
+      version:
+        description: '请输入版本号（如：1.0.0，无需v前缀，默认递增）'
+        required: false
+      skip_tests:
+        description: '跳过单元测试'
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+  prepare:
+    name: 准备发布环境
+    runs-on: ubuntu-latest
+    env:
+      TZ: 'Asia/Shanghai'
+    outputs:
+      next_version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: 验证仓库名称
+        if: github.event.inputs.confirm != github.repository
+        run: |
+          echo "仓库名称不匹配，输入: ${{ github.event.inputs.confirm }}，期望: ${{ github.repository }}"
+          exit 1
+
+      - name: 检出代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 获取版本号
+        id: get_version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            # 获取最新tag版本号并加1
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            LATEST_VERSION=${LATEST_TAG#v}
+            IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_VERSION"
+            PATCH=$((VERSION_PARTS[2] + 1))
+            VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH"
+          fi
+          
+          # 验证版本号格式
+          if ! echo "$VERSION" | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" > /dev/null; then
+            echo "错误：版本号格式不正确。应为：X.Y.Z（如：1.0.0）"
+            exit 1
+          fi
+          
+          # 检查版本号是否已存在
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "错误：版本 v$VERSION 已存在"
+            exit 1
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "将发布版本：v$VERSION"
+
+  test:
+    name: 运行单元测试
+    needs: prepare
+    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    permissions:
+      checks: write
+      contents: read
+      actions: read
+      security-events: write
+    uses: ./.github/workflows/test.yml
+    secrets:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
+  publish:
+    name: 运行版本发布
+    needs: [prepare, test]
+    if: ${{ always() && (needs.test.result == 'success' || needs.test.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    env:
+      TZ: 'Asia/Shanghai'
+    permissions:
+      contents: write
+      
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 更新版本号
+        run: |
+          VERSION="${{ needs.prepare.outputs.next_version }}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          if [ "$VERSION" != "$CURRENT_VERSION" ]; then
+            echo "更新版本号: $CURRENT_VERSION -> $VERSION"
+            npm version $VERSION --no-git-tag-version
+          else
+            echo "版本号未变更，保持 $VERSION"
+          fi
+      
+      - name: 发布至注册表
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
+        run: npm publish --access public
+      
+      - name: 预热注册表
+        run: |
+          echo "🔄 请求注册表预热..."
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          VERSION="${{ needs.prepare.outputs.next_version }}"
+          curl -X GET "https://registry.npmmirror.com/$PACKAGE_NAME?sync_upstream=true" || true
+          echo "📦 注册表将在稍后同步: https://registry.npmmirror.com/package/$PACKAGE_NAME"
+
+      - name: 提交版本标签
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ needs.prepare.outputs.next_version }}"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+          # 提交版本
+          git add package.json
+          if [ -f "package-lock.json" ]; then
+            git add package-lock.json
+          fi
+          git commit -m "chore: 发布 v$VERSION" || true
+          
+          # 创建标签
+          git tag -a "v$VERSION" -m "chore: 发布 v$VERSION"
+          
+          # 拉取提交
+          git pull origin
+
+          # 推送版本
+          git push origin --follow-tags
+          
+      - name: 发布完成
+        run: |
+          echo "✅ 发布完成"
+          echo "版本: v${{ needs.prepare.outputs.next_version }}"
+          echo "标签: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.prepare.outputs.next_version }}"
+          echo "注册表: https://www.npmjs.com/package/$(node -p "require('./package.json').name")"

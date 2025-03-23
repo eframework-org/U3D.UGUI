@@ -1,0 +1,20 @@
+{
+    "name": "EFramework.UnityUI.Tests",
+    "rootNamespace": "",
+    "references": [
+        "UnityEngine.TestRunner",
+        "EFramework.UnityUI",
+        "EFramework.Utility",
+        "Unity.TextMeshPro",
+        "EFramework.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

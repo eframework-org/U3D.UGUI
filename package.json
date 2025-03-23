@@ -1,0 +1,34 @@
+{
+  "name": "org.eframework.u3d.ugui",
+  "displayName": "U3D.UGUI",
+  "description": "U3D.UGUI 是基于 Unity UI 的一个拓展模块，提供了丰富的组件扩展和工具集，例如 Sheet 图集打包和循环列表视图等，能够有效简化 UI 开发流程。",
+  "version": "0.0.1",
+  "unity": "2021.3",
+  "license": "MIT",
+  "author": {
+    "name": "EFramework Organization",
+    "email": "eframework-org@outlook.com",
+    "url": "https://github.com/eframework-org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eframework-org/U3D.UGUI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eframework-org/U3D.UGUI/issues"
+  },
+  "keywords": [
+    "eframework",
+    "package",
+    "unity",
+    "ugui"
+  ],
+  "dependencies": {
+    "org.eframework.u3d.util": "0.0.1",
+    "org.eframework.u3d.edit": "0.0.1"
+  },
+  "puerExports": [
+    "UnityEngine.UI",
+    "EFramework.UnityUI"
+  ]
+}
