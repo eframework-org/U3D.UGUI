@@ -20,7 +20,7 @@
    - 系统将自动创建 UIAtlas 预制体
 
 2. 图集组成：
-   - `DocsPath`: 指向包含原始精灵图片的目录
+   - `RawPath`: 指向包含原始精灵图片的目录
    - `Sprites`: 存储所有可用的 Sprite 资源数组，通常由 UIAtlasEditor 自动填充
 
 ### 获取 Sprite

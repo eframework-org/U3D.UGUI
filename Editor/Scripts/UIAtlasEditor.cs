@@ -89,17 +89,17 @@ namespace EFramework.UnityUI.Editor
                 if (string.IsNullOrEmpty(path)) XLog.Error("UIAtlasEditor.Create: selection path is empty.");
                 else
                 {
-                    var docsPath = EditorUtility.SaveFolderPanel("Select Docs Path", XEnv.ProjectPath, null);
-                    if (string.IsNullOrEmpty(docsPath)) XLog.Warn("UIAtlasEditor.Create: docs path is empty.");
+                    var rawPath = EditorUtility.SaveFolderPanel("Select Raw Path", XEnv.ProjectPath, null);
+                    if (string.IsNullOrEmpty(rawPath)) XLog.Warn("UIAtlasEditor.Create: raw path is empty.");
                     else
                     {
-                        docsPath = XFile.NormalizePath(Path.GetRelativePath(XEnv.ProjectPath, docsPath));
-                        if (!XFile.HasDirectory(docsPath)) XLog.Error("UIAtlasEditor.Create: docs path doesn't exist: {0}", docsPath);
+                        rawPath = XFile.NormalizePath(Path.GetRelativePath(XEnv.ProjectPath, rawPath));
+                        if (!XFile.HasDirectory(rawPath)) XLog.Error("UIAtlasEditor.Create: raw path doesn't exist: {0}", rawPath);
                         else
                         {
-                            var atlasRoot = XFile.PathJoin(XFile.HasFile(path) ? Path.GetDirectoryName(path) : path, Path.GetFileName(docsPath));
+                            var atlasRoot = XFile.PathJoin(XFile.HasFile(path) ? Path.GetDirectoryName(path) : path, Path.GetFileName(rawPath));
                             if (!XFile.HasDirectory(atlasRoot)) XFile.CreateDirectory(atlasRoot);
-                            var asset = Create(XFile.PathJoin(atlasRoot, Path.GetFileName(docsPath) + ".prefab"), docsPath);
+                            var asset = Create(XFile.PathJoin(atlasRoot, Path.GetFileName(rawPath) + ".prefab"), rawPath);
                             if (asset) Selection.activeObject = asset;
                         }
                     }
@@ -111,12 +111,12 @@ namespace EFramework.UnityUI.Editor
         /// 创建 UIAtlas 预制体资源。
         /// </summary>
         /// <param name="atlasPath">UIAtlas 预制体的保存路径</param>
-        /// <param name="docsPath">包含精灵图片的文档路径</param>
+        /// <param name="rawPath">包含精灵图片的素材路径</param>
         /// <returns>创建的 UIAtlas 资源对象</returns>
-        public static Object Create(string atlasPath, string docsPath)
+        public static Object Create(string atlasPath, string rawPath)
         {
             var go = new GameObject();
-            go.AddComponent<UIAtlas>().DocsPath = docsPath;
+            go.AddComponent<UIAtlas>().RawPath = rawPath;
 
             var asset = PrefabUtility.SaveAsPrefabAsset(go, atlasPath);
             Object.DestroyImmediate(go);
@@ -171,17 +171,17 @@ namespace EFramework.UnityUI.Editor
                 return false;
             }
 
-            if (!XFile.HasDirectory(atlas.DocsPath))
+            if (!XFile.HasDirectory(atlas.RawPath))
             {
-                XLog.Error("UIAtlasEditor.Import: docs path doesn't exist: {0}", atlas.DocsPath);
+                XLog.Error("UIAtlasEditor.Import: raw path doesn't exist: {0}", atlas.RawPath);
                 return false;
             }
 
             var atlasName = Path.GetFileNameWithoutExtension(path);
-            var rawAtlasTex = XFile.PathJoin(Path.GetDirectoryName(atlas.DocsPath), atlasName + ".png");
-            var rawAtlasSheet = XFile.PathJoin(Path.GetDirectoryName(atlas.DocsPath), atlasName + ".tpsheet");
+            var rawAtlasTex = XFile.PathJoin(Path.GetDirectoryName(atlas.RawPath), atlasName + ".png");
+            var rawAtlasSheet = XFile.PathJoin(Path.GetDirectoryName(atlas.RawPath), atlasName + ".tpsheet");
 
-            var argFile = XFile.PathJoin(Path.GetDirectoryName(atlas.DocsPath), atlasName + ".arg");
+            var argFile = XFile.PathJoin(Path.GetDirectoryName(atlas.RawPath), atlasName + ".arg");
             var arg = "--format unity-texture2d --force-publish --disable-auto-alias --disable-rotation --force-squared --extrude 1";
             if (XFile.HasFile(argFile)) arg = File.ReadAllText(argFile);
 
@@ -191,7 +191,7 @@ namespace EFramework.UnityUI.Editor
             {
                 var task = XEditor.Cmd.Run(
                                 bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin", "/Applications/TexturePacker.app/Contents/MacOS"),
-                                args: new string[] { arg, $"--sheet \"{rawAtlasTex}\" --data \"{rawAtlasSheet}\" \"{atlas.DocsPath}\"" });
+                                args: new string[] { arg, $"--sheet \"{rawAtlasTex}\" --data \"{rawAtlasSheet}\" \"{atlas.RawPath}\"" });
                 task.Wait();
 
                 if (task.Result.Code == 0 && XFile.HasFile(rawAtlasTex) && XFile.HasFile(rawAtlasSheet))
@@ -200,7 +200,7 @@ namespace EFramework.UnityUI.Editor
                     if (sheetDesc == null) XLog.Error("UIAtlasEditor.Import: parse sheet info failed: {0}", rawAtlasSheet);
                     else
                     {
-                        Draw(sheetDesc, atlas.DocsPath, rawAtlasTex, !arg.Contains("--trim-mode None"));
+                        Draw(sheetDesc, atlas.RawPath, rawAtlasTex, !arg.Contains("--trim-mode None"));
 
                         var atlasDst = XFile.NormalizePath(Path.GetFullPath(Path.GetDirectoryName(path)));
                         var atlasTex = XFile.PathJoin(atlasDst, atlasName + ".png");
@@ -242,8 +242,8 @@ namespace EFramework.UnityUI.Editor
             if (XFile.HasFile(rawAtlasTex)) XFile.DeleteFile(rawAtlasTex);
             if (XFile.HasFile(rawAtlasSheet)) XFile.DeleteFile(rawAtlasSheet);
 
-            if (success) XLog.Debug("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> succeed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.DocsPath), atlas.DocsPath);
-            else XLog.Error("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> failed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.DocsPath), atlas.DocsPath);
+            if (success) XLog.Debug("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> succeed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.RawPath), atlas.RawPath);
+            else XLog.Error("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> failed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.RawPath), atlas.RawPath);
             return success;
         }
 
@@ -412,10 +412,10 @@ namespace EFramework.UnityUI.Editor
         /// 绘制图集纹理，将各个精灵拼接到一个图集中。
         /// </summary>
         /// <param name="sheetDesc">图集描述对象</param>
-        /// <param name="docsPath">精灵图片所在的文档路径</param>
+        /// <param name="rawPath">精灵图片所在的素材路径</param>
         /// <param name="textureFile">目标图集纹理文件路径</param>
         /// <param name="isTrim">是否裁剪透明边缘</param>
-        internal static void Draw(SheetDesc sheetDesc, string docsPath, string textureFile, bool isTrim = true)
+        internal static void Draw(SheetDesc sheetDesc, string rawPath, string textureFile, bool isTrim = true)
         {
             static int getEdge(Bitmap bitmap, bool isStart, bool isHorizontal, bool isTrim = true)
             {
@@ -462,7 +462,7 @@ namespace EFramework.UnityUI.Editor
             using var texBitmap = new Bitmap(texWidth, texHeight);
             foreach (var smd in sheetDesc.MetaData)
             {
-                var spritePath = XFile.PathJoin(docsPath, smd.name + ".png");
+                var spritePath = XFile.PathJoin(rawPath, smd.name + ".png");
                 if (!XFile.HasFile(spritePath)) spritePath = Path.ChangeExtension(spritePath, ".jpg");
 
                 using var spriteBmp = new Bitmap(Image.FromFile(spritePath));

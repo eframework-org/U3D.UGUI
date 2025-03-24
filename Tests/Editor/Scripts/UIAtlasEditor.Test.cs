@@ -17,7 +17,7 @@ using EFramework.Editor;
 public class TestUIAtlasEditor
 {
     const string TEST_ATLAS_PATH = "Assets/Temp/TestAtlas/TestAtlas.prefab";
-    const string TEST_DOCS_PATH = "Assets/Temp/DocsPath";
+    const string TEST_RAW_PATH = "Assets/Temp/RawPath";
     public string rawAssetsDir;
 
     [OneTimeSetUp]
@@ -29,7 +29,7 @@ public class TestUIAtlasEditor
     [SetUp]
     public void Setup()
     {
-        if (!XFile.HasDirectory(TEST_DOCS_PATH)) XFile.CreateDirectory(TEST_DOCS_PATH);
+        if (!XFile.HasDirectory(TEST_RAW_PATH)) XFile.CreateDirectory(TEST_RAW_PATH);
         var prefabDir = Path.GetDirectoryName(TEST_ATLAS_PATH);
         if (!XFile.HasDirectory(prefabDir)) XFile.CreateDirectory(prefabDir);
 
@@ -40,7 +40,7 @@ public class TestUIAtlasEditor
     {
         string prefabDir = Path.GetFullPath(Path.GetDirectoryName(TEST_ATLAS_PATH));
         if (XFile.HasDirectory(prefabDir)) XFile.DeleteDirectory(prefabDir);
-        if (XFile.HasDirectory(TEST_DOCS_PATH)) XFile.DeleteDirectory(TEST_DOCS_PATH);
+        if (XFile.HasDirectory(TEST_RAW_PATH)) XFile.DeleteDirectory(TEST_RAW_PATH);
     }
 
     [Test]
@@ -63,7 +63,7 @@ public class TestUIAtlasEditor
     public void Create()
     {
         LogAssert.ignoreFailingMessages = true;  // 忽略所有错误日志
-        var asset = UIAtlasEditor.Create(TEST_ATLAS_PATH, TEST_DOCS_PATH);
+        var asset = UIAtlasEditor.Create(TEST_ATLAS_PATH, TEST_RAW_PATH);
         LogAssert.ignoreFailingMessages = false;    // 恢复正常行为
 
         // Assert
@@ -73,30 +73,30 @@ public class TestUIAtlasEditor
 
         var atlas = prefab.GetComponent<UIAtlas>();
         Assert.IsNotNull(atlas, "预制体应该包含UIAtlas组件");
-        Assert.AreEqual(TEST_DOCS_PATH, atlas.DocsPath, "DocsPath应该被正确设置");
+        Assert.AreEqual(TEST_RAW_PATH, atlas.RawPath, "RawPath应该被正确设置");
     }
 
     [Test]
     public void Import()
     {
         // 测试导入不存在的图集
-        LogAssert.Expect(LogType.Error, new Regex(@".*UIAtlasEditor\.Import: null atlas at:.*"));
+        LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: null atlas at: .*"));
         // 使用一个不存在的路径
         string nonExistentPath = "Assets/NonExistent/Atlas.prefab";
         bool result = UIAtlasEditor.Import(nonExistentPath);
         Assert.IsFalse(result, "当图集不存在时应返回false");
 
-        // 测试导入不存在的DocsPath
-        LogAssert.Expect(LogType.Error, new Regex(@".*UIAtlasEditor\.Import: docs path doesn't exist:.*"));
-        // 创建图集预制体但设置不存在的DocsPath
+        // 测试导入不存在的RawPath
+        LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: raw path doesn't exist: .*"));
+        // 创建图集预制体但设置不存在的RawPath
         var go = new GameObject("TestAtlas");
         var atlas = go.AddComponent<UIAtlas>();
-        // 设置不存在的DocsPath
-        atlas.DocsPath = "Assets/NonExistentDocsPath";
+        // 设置不存在的RawPath
+        atlas.RawPath = "Assets/NonExistentRawPath";
         PrefabUtility.SaveAsPrefabAsset(go, TEST_ATLAS_PATH);   // 保存预制体会触发Import
 
         // 测试导入成功
-        atlas.DocsPath = rawAssetsDir;
+        atlas.RawPath = rawAssetsDir;
         LogAssert.ignoreFailingMessages = true;
         PrefabUtility.SaveAsPrefabAsset(go, TEST_ATLAS_PATH);   // 保存预制体会触发Import
         LogAssert.ignoreFailingMessages = false;

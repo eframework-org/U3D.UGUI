@@ -40,9 +40,9 @@ namespace EFramework.UnityUI
     public class UIAtlas : MonoBehaviour
     {
         /// <summary>
-        /// 文档路径，指向包含原始精灵图片的目录。
+        /// 素材路径，指向包含原始精灵图片的目录。
         /// </summary>
-        public string DocsPath;
+        public string RawPath;
 
         /// <summary>
         /// Sprite 资源数组，存储所有可用的 Sprite。
