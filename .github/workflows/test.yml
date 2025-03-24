@@ -25,6 +25,8 @@ jobs:
   test:
     name: 测试 ${{ matrix.testMode }} 环境
     runs-on: ubuntu-latest
+    env:
+      TZ: 'Asia/Shanghai'
     strategy:
       fail-fast: false
       matrix:
