@@ -24,82 +24,8 @@ namespace EFramework.UnityUI
     /// - 提供灵活的适配器接口，便于自定义数据绑定逻辑
     /// - 自动处理元素的创建、回收和位置更新
     /// - 支持动态调整内容尺寸和滚动位置
-    /// - 支持元素缓存，减少重复创建开销
-    /// 
-    /// 使用手册
-    /// 1. 基本设置
-    /// 
-    /// 1.1 组件添加
-    ///     在UI对象上添加UIWrapContent组件，它会继承ScrollRect的所有功能
-    ///     设置viewport和content引用，确保正确的层级关系
-    ///     
-    /// 1.2 布局模式选择
-    ///     选择适合的布局模式：垂直列表(VerticalList)、水平列表(HorizontalList)、垂直网格(VerticalGrid)、水平网格(HorizontalGrid)
-    ///     设置相应的间距和边距参数
-    ///     
-    /// 2. 适配器实现
-    /// 
-    /// 2.1 简单适配器
-    ///     使用内置的ISimpleAdapter类，适用于单一类型项目：
-    ///     ```csharp
-    ///     wrapContent.Adapter = new UIWrapContent.ISimpleAdapter(
-    ///         wrapContent,
-    ///         () => dataList.Count, // 获取数据总数
-    ///         (cell, index) => {
-    ///             // 设置单元格数据
-    ///             cell.GetComponent<Text>().text = dataList[index].ToString();
-    ///         }
-    ///     );
-    ///     ```
-    ///     
-    /// 2.2 自定义适配器
-    ///     实现ICustomAdapter接口，适用于多类型项目：
-    ///     ```csharp
-    ///     public class MyAdapter : UIWrapContent.ICustomAdapter 
-    ///     {
-    ///         public bool SingleZygote => false; // 多种单元格类型
-    ///         
-    ///         public int GetCellType(int index) {
-    ///             return index % 2; // 奇偶行使用不同类型
-    ///         }
-    ///         
-    ///         public RectTransform GetCellZygote(int type) {
-    ///             return type == 0 ? typeATemplate : typeBTemplate;
-    ///         }
-    ///         
-    ///         public int GetCellCount() {
-    ///             return dataList.Count;
-    ///         }
-    ///         
-    ///         public void SetCellData(RectTransform cell, int index) {
-    ///             // 根据索引设置单元格数据
-    ///             var data = dataList[index];
-    ///             // 更新UI元素
-    ///         }
-    ///     }
-    ///     ```
-    ///     
-    /// 3. 运行时控制
-    /// 
-    /// 3.1 滚动控制
-    ///     ```csharp
-    ///     // 滚动到指定位置（0-1范围）
-    ///     wrapContent.ScrollTo(0.5f); // 滚动到中间位置
-    ///     ```
-    ///     
-    /// 3.2 数据更新
-    ///     ```csharp
-    ///     // 数据变更后重新加载列表
-    ///     wrapContent.Reload();
-    ///     ```
-    ///     
-    /// 3.3 遍历可见项
-    ///     ```csharp
-    ///     wrapContent.EachItem((index, item) => {
-    ///         Debug.Log($"可见项: 索引={index}, 名称={item.name}");
-    ///     });
-    ///     ```
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [AddComponentMenu("UI/Wrap Content")]
     public class UIWrapContent : ScrollRect

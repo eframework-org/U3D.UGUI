@@ -19,29 +19,8 @@ namespace EFramework.UnityUI
     /// - 自动处理指针按下和释放事件
     /// - 支持自动查找和引用按钮组件
     /// - 无需编写任何代码即可实现按钮动效
-    /// 
-    /// 使用手册
-    /// 1. 添加组件
-    /// 
-    /// 1.1 添加到按钮对象
-    /// 
-    ///     选择含有 Button 组件的游戏对象
-    ///     添加 UIButtonScale 组件
-    ///     组件会自动查找并引用 Button
-    /// 
-    /// 1.2 自定义按钮引用
-    /// 
-    ///     如果需要对其他按钮应用效果
-    ///     可以手动指定 button 引用
-    /// 
-    /// 2. 运行时行为
-    /// 
-    /// 2.1 按下效果
-    /// 
-    ///     按下按钮时，按钮将缩小到原始大小的 95%
-    ///     释放按钮时，按钮将恢复原始大小
-    /// 
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [AddComponentMenu("UI/Button Scale")]
     public class UIButtonScale : MonoBehaviour, IPointerDownHandler, IPointerUpHandler

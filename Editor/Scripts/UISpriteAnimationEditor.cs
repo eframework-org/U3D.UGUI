@@ -16,24 +16,8 @@ namespace EFramework.UnityUI.Editor
     /// - 为 UISpriteAnimation 组件提供自定义 Inspector 界面
     /// - 支持不同精灵模式的属性显示
     /// - 提供便捷的精灵动画创建菜单
-    /// - 自动配置精灵动画的基本属性
-    /// 
-    /// 使用手册
-    /// 1. 创建精灵动画
-    /// 
-    /// 1.1 通过菜单创建
-    /// 
-    ///     在 Hierarchy 窗口中右键选择 "UI/Sprite Animation"
-    ///     系统将自动创建一个带有 UISpriteAnimation 组件的 UI 对象
-    /// 
-    /// 2. 配置精灵动画
-    /// 
-    /// 2.1 设置精灵模式
-    /// 
-    ///     选择 Atlas 模式使用图集进行动画
-    ///     选择 Sprite 模式使用单独的精灵进行动画
-    /// 
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [CustomEditor(typeof(UISpriteAnimation), true)]
     [CanEditMultipleObjects]

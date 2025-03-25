@@ -1,13 +1,14 @@
 # UIEventListener
 
-`UIEventListener` 是一个UI事件监听器组件，用于处理UI交互的各种事件。它实现了Unity UI事件系统的多种接口，简化事件处理和回调管理。
+[![Version](https://img.shields.io/npm/v/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
+[![Downloads](https://img.shields.io/npm/dm/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
+
+UIEventListener 是一个UI事件监听器组件，用于处理UI交互的各种事件。实现了Unity UI事件系统的多种接口。
 
 ## 功能特性
 
 - 统一封装Unity UI事件系统的各种交互接口
 - 支持事件回调和事件委托两种绑定方式
-- 提供静态帮助方法快速获取或添加组件
-- 自动跟踪按钮的按下状态
 
 ## 使用手册
 
@@ -44,52 +45,7 @@
    }
    ```
 
-### 常见用例
-
-1. 点击事件处理：
-   ```csharp
-   var button = UIEventListener.Get(buttonObj);
-   button.OnPointerClickEvent += (data) => {
-       // 处理点击逻辑
-       Debug.Log("按钮被点击");
-   };
-   ```
-
-2. 拖拽功能实现：
-   ```csharp
-   var dragObj = UIEventListener.Get(dragableObj);
-   dragObj.OnBeginDragEvent += (data) => { 
-       // 开始拖拽逻辑
-       Debug.Log("开始拖拽");
-   };
-   dragObj.OnDragEvent += (data) => { 
-       // 更新位置
-       dragableObj.transform.position = data.position;
-   };
-   dragObj.OnEndDragEvent += (data) => { 
-       // 结束拖拽逻辑
-       Debug.Log("结束拖拽");
-   };
-   ```
-
-3. 悬停效果：
-   ```csharp
-   var hoverObj = UIEventListener.Get(imageObj);
-   hoverObj.OnPointerEnterEvent += (data) => {
-       // 鼠标进入效果
-       imageObj.GetComponent<Image>().color = Color.grey;
-   };
-   hoverObj.OnPointerExitEvent += (data) => {
-       // 鼠标离开效果
-       imageObj.GetComponent<Image>().color = Color.white;
-   };
-   ```
-
 ## 常见问题
-
-### Q: UIEventListener和Button组件有什么区别？
-
-A: Button组件主要处理点击功能，而UIEventListener提供了更全面的事件处理能力，包括点击、拖拽、悬停等多种交互类型。它允许你通过代码更灵活地管理UI事件，而不需要在Inspector中配置事件响应。
 
 ### Q: 如何判断一个UI元素当前是否被按下？
 
@@ -103,27 +59,6 @@ if (listener.IsPressed) {
 }
 ```
 
-### Q: 一个GameObject可以有多个UIEventListener组件吗？
-
-A: 不建议在同一个GameObject上添加多个UIEventListener组件。通过`UIEventListener.Get()`方法获取组件时，如果已存在则返回现有组件，如果不存在则添加新组件，确保每个GameObject只有一个UIEventListener实例。
-
-### Q: 如何移除已添加的事件监听？
-
-A: 可以使用C#事件委托的`-=`操作符移除之前添加的事件监听：
-
-```csharp
-// 定义事件处理方法
-void HandleClick(PointerEventData data) {
-    Debug.Log("点击");
-}
-
-// 添加事件监听
-listener.OnPointerClickEvent += HandleClick;
-
-// 移除事件监听
-listener.OnPointerClickEvent -= HandleClick;
-```
-
 ### Q: UIEventListener支持哪些类型的事件？
 
 A: UIEventListener支持以下类型的事件：
@@ -134,16 +69,6 @@ A: UIEventListener支持以下类型的事件：
 - 拖拽相关 (OnBeginDragEvent/OnDragEvent/OnEndDragEvent)
 
 更多问题，请查阅[问题反馈](../CONTRIBUTING.md#问题反馈)。
-
-## 技术细节
-
-- 实现了Unity UI事件系统的多个接口：
-  - ISelectHandler, IDeselectHandler
-  - IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
-  - IBeginDragHandler, IDragHandler, IEndDragHandler
-- 提供了事件委托和回调函数两种方式进行事件响应
-- 使用非序列化的布尔字段`IsPressed`跟踪UI元素的按下状态
-- 通过静态方法简化了获取和添加组件的过程
 
 ## 项目信息
 

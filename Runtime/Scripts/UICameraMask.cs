@@ -18,34 +18,8 @@ namespace EFramework.UnityUI
     /// - 支持自定义遮罩颜色和透明度
     /// - 单例模式设计，便于全局调用
     /// - 可控制过渡时间，适用于各种场景切换
-    /// 
-    /// 使用手册
-    /// 1. 组件设置
-    /// 
-    /// 1.1 创建遮罩
-    ///     
-    ///     在Canvas下创建一个Image组件作为全屏遮罩
-    ///     添加CanvasGroup组件
-    ///     添加UICameraMask组件，并将CanvasGroup赋值给ScreenMask字段
-    /// 
-    /// 1.2 全局访问
-    ///     
-    ///     通过静态属性Instance可在任何地方访问相机遮罩
-    ///     例如：UICameraMask.Instance.SetTarget(Color.black, 2f);
-    /// 
-    /// 2. 常见用法
-    /// 
-    /// 2.1 场景过渡
-    ///     
-    ///     在加载新场景前：UICameraMask.Instance.SetTarget(Color.black);
-    ///     场景加载完成后遮罩会自动淡出
-    /// 
-    /// 2.2 自定义过渡效果
-    ///     
-    ///     可以设置不同的颜色：UICameraMask.Instance.SetTarget(Color.red);
-    ///     可以设置过渡时间：UICameraMask.Instance.SetTarget(Color.black, 0.5f);
-    ///     可以设置最大透明度：UICameraMask.Instance.SetTarget(Color.black, 1f, 0.8f);
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [AddComponentMenu("UI/Camera Mask")]
     public class UICameraMask : MonoBehaviour

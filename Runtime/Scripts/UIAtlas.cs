@@ -17,24 +17,8 @@ namespace EFramework.UnityUI
     /// - 提供高效的 Sprite 名称查找功能
     /// - 自动缓存 Sprite 索引，优化重复查询性能
     /// - 与 UIAtlasEditor 配合使用，支持自动导入和更新
-    /// 
-    /// 使用手册
-    /// 1. 创建图集
-    /// 
-    /// 1.1 通过编辑器创建
-    /// 
-    ///     在 Project 窗口中选择目标文件夹，右键菜单选择 "Create/2D/Sheet Atlas"
-    ///     选择包含精灵图片的文档目录，系统将自动创建 UIAtlas 预制体
-    /// 
-    /// 2. 获取 Sprite
-    /// 
-    /// 2.1 通过名称获取
-    /// 
-    ///     var atlas = GetComponent<UIAtlas>();
-    ///     var sprite = atlas.GetSprite("IconName");
-    ///     image.sprite = sprite;
-    /// 
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [AddComponentMenu("UI/Atlas")]
     public class UIAtlas : MonoBehaviour

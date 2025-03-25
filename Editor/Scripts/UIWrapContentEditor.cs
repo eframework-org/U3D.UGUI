@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEditor.UI;
-using EFramework.UnityUI;
 
 namespace EFramework.UnityUI.Editor
 {
@@ -20,36 +19,9 @@ namespace EFramework.UnityUI.Editor
     /// 功能特性
     /// - 为 UIWrapContent 组件提供自定义 Inspector 界面
     /// - 支持垂直列表、水平列表、垂直网格和水平网格四种布局模式
-    /// - 提供便捷的包装内容创建菜单
-    /// - 自动配置包装内容的基本属性
-    /// 
-    /// 使用手册
-    /// 1. 创建包装内容
-    /// 
-    /// 1.1 通过菜单创建
-    /// 
-    ///     在 Hierarchy 窗口中右键选择 "UI/Wrap Content"
-    ///     系统将自动创建一个带有 UIWrapContent 组件的 UI 对象
-    /// 
-    /// 2. 配置布局模式
-    /// 
-    /// 2.1 垂直列表
-    /// 
-    ///     设置 Layout 为 VerticalList，配置间距和边距
-    ///     
-    /// 2.2 水平列表
-    /// 
-    ///     设置 Layout 为 HorizontalList，配置间距和边距
-    ///     
-    /// 2.3 垂直网格
-    /// 
-    ///     设置 Layout 为 VerticalGrid，配置间距和列数
-    ///     
-    /// 2.4 水平网格
-    /// 
-    ///     设置 Layout 为 HorizontalGrid，配置间距和行数
-    /// 
+    /// - 提供便捷的Unity编辑器菜单创建组件
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [CustomEditor(typeof(UIWrapContent), true)]
     [CanEditMultipleObjects]

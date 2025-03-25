@@ -17,70 +17,8 @@ namespace EFramework.UnityUI
     /// 功能特性
     /// - 统一封装Unity UI事件系统的各种交互接口
     /// - 支持事件回调和事件委托两种绑定方式
-    /// - 提供静态帮助方法快速获取或添加组件
-    /// - 自动跟踪按钮的按下状态
-    /// 
-    /// 使用手册
-    /// 1. 组件获取
-    /// 
-    /// 1.1 获取或添加监听器
-    ///     
-    ///     // 获取GameObject上的监听器，如果不存在则自动添加
-    ///     UIEventListener listener = UIEventListener.Get(gameObject);
-    ///     
-    ///     // 也可以传入组件来获取其GameObject上的监听器
-    ///     UIEventListener listener = UIEventListener.Get(transform);
-    /// 
-    /// 2. 事件绑定方式
-    /// 
-    /// 2.1 使用事件委托（推荐）
-    ///     
-    ///     // 使用事件委托绑定点击事件
-    ///     listener.OnPointerClickEvent += (eventData) => {
-    ///         Debug.Log("点击了：" + gameObject.name);
-    ///     };
-    /// 
-    /// 2.2 使用回调函数
-    ///     
-    ///     // 直接指定回调函数
-    ///     listener.OnPointerClickFunc = HandleClick;
-    ///     
-    ///     // 回调函数定义
-    ///     private void HandleClick(PointerEventData eventData) {
-    ///         Debug.Log("点击了：" + eventData.pointerCurrentRaycast.gameObject.name);
-    ///     }
-    /// 
-    /// 3. 常见用法示例
-    /// 
-    /// 3.1 点击事件处理
-    ///     
-    ///     var button = UIEventListener.Get(buttonObj);
-    ///     button.OnPointerClickEvent += (data) => {
-    ///         // 处理点击逻辑
-    ///     };
-    /// 
-    /// 3.2 拖拽功能实现
-    ///     
-    ///     var dragObj = UIEventListener.Get(dragableObj);
-    ///     dragObj.OnBeginDragEvent += (data) => { /* 开始拖拽 */ };
-    ///     dragObj.OnDragEvent += (data) => { 
-    ///         // 更新位置
-    ///         dragableObj.transform.position = data.position;
-    ///     };
-    ///     dragObj.OnEndDragEvent += (data) => { /* 结束拖拽 */ };
-    /// 
-    /// 3.3 悬停效果
-    ///     
-    ///     var hoverObj = UIEventListener.Get(imageObj);
-    ///     hoverObj.OnPointerEnterEvent += (data) => {
-    ///         // 鼠标进入效果
-    ///         imageObj.GetComponent<Image>().color = Color.grey;
-    ///     };
-    ///     hoverObj.OnPointerExitEvent += (data) => {
-    ///         // 鼠标离开效果
-    ///         imageObj.GetComponent<Image>().color = Color.white;
-    ///     };
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     [AddComponentMenu("UI/Event Listener")]
     public class UIEventListener : MonoBehaviour, ISelectHandler, IDeselectHandler,

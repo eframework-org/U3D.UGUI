@@ -11,14 +11,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.U2D.Sprites;
-using EFramework.UnityUI;
 using EFramework.Utility;
 using EFramework.Editor;
 
 namespace EFramework.UnityUI.Editor
 {
     /// <summary>
-    /// UIAtlas 编辑器工具，用于管理和处理 Unity 2D 精灵图集。
+    /// UIAtlas 编辑器工具，用于管理和处理 Unity 精灵图集。
     /// </summary>
     /// <remarks>
     /// <code>
@@ -28,23 +27,8 @@ namespace EFramework.UnityUI.Editor
     /// - 支持精灵图集的自动分割和重组
     /// - 管理纹理导入设置和精灵元数据
     /// - 支持透明度处理和边界修剪
-    /// 
-    /// 使用手册
-    /// 1. 创建图集
-    /// 
-    /// 1.1 通过菜单创建
-    /// 
-    ///     在 Project 窗口中选择目标文件夹，右键菜单选择 "Create/2D/Sheet Atlas"
-    ///     选择包含精灵图片的文档目录，系统将自动创建 UIAtlas 预制体
-    /// 
-    /// 2. 导入图集
-    /// 
-    /// 2.1 自动导入
-    /// 
-    ///     当 UIAtlas 预制体被导入或移动时，系统将自动处理其依赖关系
-    /// 
-    /// 
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     public class UIAtlasEditor
     {

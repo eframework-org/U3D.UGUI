@@ -24,75 +24,8 @@ namespace EFramework.UnityUI
     /// - 集成按钮点击事件和状态管理
     /// - 简化文本内容和图片设置操作
     /// - 支持网络图片异步加载和缓存管理
-    /// - 提供UI布局刷新功能
-    /// 
-    /// 使用手册
-    /// 1. 组件查找
-    /// 
-    /// 1.1 快速索引
-    ///     
-    ///     // 通过RectTransform查找子组件
-    ///     Button btn = rectTransform.Index<Button>("ButtonName");
-    ///     
-    ///     // 通过Canvas查找子组件
-    ///     Text txt = canvas.Index<Text>("TextName");
-    /// 
-    /// 2. 透明度控制
-    /// 
-    /// 2.1 设置组件透明度
-    ///     
-    ///     // 设置当前组件透明度为0.5
-    ///     gameObject.SetGraphicAlpha(0.5f);
-    ///     
-    ///     // 设置子组件透明度为128（0-255范围）
-    ///     gameObject.SetGraphicAlpha("ChildName", 128);
-    /// 
-    /// 3. 事件管理
-    /// 
-    /// 3.1 按钮点击事件
-    ///     
-    ///     // 为按钮设置点击事件
-    ///     gameObject.SetButtonEvent((go) => {
-    ///         Debug.Log("按钮被点击：" + go.name);
-    ///     });
-    ///     
-    ///     // 启用/禁用按钮交互
-    ///     gameObject.SetEventEnabled(false);
-    /// 
-    /// 4. 文本设置
-    /// 
-    /// 4.1 设置普通文本
-    ///     
-    ///     // 设置Text组件内容
-    ///     gameObject.SetLabelText("新文本内容");
-    ///     
-    /// 4.2 设置TMP文本
-    ///     
-    ///     // 设置TextMeshProUGUI组件内容
-    ///     gameObject.SetMeshProText("新文本内容");
-    /// 
-    /// 5. 图片管理
-    /// 
-    /// 5.1 设置精灵图片
-    ///     
-    ///     // 从图集中设置图片
-    ///     gameObject.SetSpriteName("ChildImage", "SpriteName", atlasComponent);
-    ///     
-    /// 5.2 加载网络图片
-    ///     
-    ///     // 加载并显示网络图片
-    ///     gameObject.SetRawImage("http://example.com/image.jpg");
-    ///     
-    ///     // 加载网络图片并禁用缓存
-    ///     gameObject.SetRawImage("http://example.com/image.jpg", false);
-    /// 
-    /// 6. 布局刷新
-    /// 
-    /// 6.1 刷新UI布局
-    ///     
-    ///     // 重新计算布局
-    ///     gameObject.RefreshObSort();
     /// </code>
+    /// 更多信息请参考模块文档。
     /// </remarks>
     public static class UIUtility
     {
