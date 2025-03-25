@@ -33,7 +33,7 @@ jobs:
         projectPath:
           - Package
         unityVersion: [6000.0.32f1]
-        testMode: [PlayMode]
+        testMode: [EditMode, PlayMode]
     outputs:
       passed: ${{ steps.tests.conclusion == 'success' }}
 
@@ -43,6 +43,42 @@ jobs:
         with:
           lfs: true
           path: Package
+
+      - name: 准备镜像
+        run: |
+          # 创建 Dockerfile
+          cat > Dockerfile << EOF
+          FROM unityci/editor:ubuntu-${{ matrix.unityVersion }}-linux-il2cpp-3
+
+          # 安装必要的依赖
+          RUN apt-get update && apt-get install -y \
+              wget \
+              libegl1-mesa \
+              libgl1-mesa-glx \
+              libfontconfig \
+              libx11-6 \
+              libxkbcommon-x11-0 \
+              libqt5core5a \
+              libqt5gui5 \
+              libqt5widgets5 \
+              libqt5network5 \
+              && rm -rf /var/lib/apt/lists/*
+
+          # 下载并安装 TexturePacker
+          RUN wget https://www.codeandweb.com/download/texturepacker/7.6.0/TexturePacker-7.6.0.deb \
+              && dpkg -i TexturePacker-7.6.0.deb || true \
+              && rm TexturePacker-7.6.0.deb
+
+          # 配置 TexturePacker 环境变量
+          RUN ln -sf /usr/lib/TexturePacker/TexturePacker /usr/local/bin/TexturePacker
+
+          # 自动同意许可协议
+          RUN echo "agree" | TexturePacker --version
+          EOF
+
+          # 构建镜像
+          docker build -t unity-editor-ubuntu-linux-il2cpp-3:${{ matrix.unityVersion }} .
+          docker images | grep unity-editor-ubuntu-linux-il2cpp-3
 
       - name: 运行测试
         uses: game-ci/unity-test-runner@v4
@@ -62,7 +98,7 @@ jobs:
           artifactsPath: Results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: 测试 ${{ matrix.testMode }} 报告
-          useHostNetwork: true
+          customImage: unity-editor-ubuntu-linux-il2cpp-3:${{ matrix.unityVersion }}
 
       - name: 上传报告
         uses: actions/upload-artifact@v4
