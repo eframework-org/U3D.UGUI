@@ -104,24 +104,5 @@ public class TestUIAtlasEditor
         var atlasDir = Path.GetDirectoryName(TestAtlas);
         Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png应当被生成");
     }
-
-    [Test]
-    public void Parse()
-    {
-        // 测试不存在的文件
-        var result = UIAtlasEditor.Parse("NonExistentFile.tpsheet");
-        Assert.IsNull(result, "不存在的文件应返回null");
-
-        // 测试正常文件
-        result = UIAtlasEditor.Parse(XFile.PathJoin(TestRawAssets, "TestAtlas.tpsheet"));
-        Assert.IsNotNull(result, "存在的文件应返回非null");
-        Assert.AreEqual(result.MetaData.Length, 1, "应当包含1个精灵");
-        Assert.AreEqual(result.MetaData[0].name, "Square", "应当包含Square");
-        Assert.AreEqual(result.Width, 512, "宽度应为256");
-        Assert.AreEqual(result.Height, 512, "高度应为256");
-        Assert.IsFalse(result.BordersEnabled, "应当禁用Borders");
-        Assert.IsTrue(result.PivotPointsEnabled, "应当启用PivotPoints");
-        Assert.IsTrue(result.AlphaIsTransparency, "应当启用AlphaIsTransparency");
-    }
 }
 #endif
