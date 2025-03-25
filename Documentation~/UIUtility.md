@@ -3,19 +3,17 @@
 [![Version](https://img.shields.io/npm/v/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 [![Downloads](https://img.shields.io/npm/dm/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 
-UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包含组件查找、属性设置、事件处理和资源加载等功能。
+UIUtility 是一个 Unity UI 的工具函数集，提供了一系列简化 UI 组件操作的扩展方法，包含组件查找、属性设置、事件处理等功能。
 
 ## 功能特性
 
-- 提供UI组件快速查找和索引功能
-- 支持透明度、颜色等属性的便捷设置
-- 集成按钮点击事件和状态管理
-- 简化文本内容和图片设置操作
-- 支持网络图片异步加载和缓存管理
+- 快速索引功能：通过路径快速获取 UI 组件的子对象
+- 显示状态控制：支持透明度、文本、显示隐藏等属性的设置
+- 扩展方法支持：采用扩展方法设计，函数调用更为直观
 
 ## 使用手册
 
-### 组件查找
+### 1. 组件查找
 
 1. 快速索引：
    ```csharp
@@ -26,7 +24,7 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    Text txt = canvas.Index<Text>("TextName");
    ```
 
-### 透明度控制
+### 2. 透明度控制
 
 1. 设置组件透明度：
    ```csharp
@@ -37,7 +35,7 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    gameObject.SetGraphicAlpha("ChildName", 128);
    ```
 
-### 事件管理
+### 3. 事件管理
 
 1. 按钮点击事件：
    ```csharp
@@ -50,7 +48,7 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    gameObject.SetEventEnabled(false);
    ```
 
-### 文本设置
+### 4. 文本设置
 
 1. 设置普通文本：
    ```csharp
@@ -70,7 +68,7 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    gameObject.SetMeshProText("ChildTMP", "新文本内容");
    ```
 
-### 图片管理
+### 5. 图片管理
 
 1. 设置精灵图片：
    ```csharp
@@ -93,7 +91,7 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    Texture2D tex = UIUtility.GetTexture("http://example.com/image.jpg");
    ```
 
-### 布局刷新
+### 6. 布局刷新
 
 1. 刷新UI布局：
    ```csharp
@@ -105,20 +103,6 @@ UIUtility 是一个UI工具类，提供了一系列便捷的UI操作方法，包
    ```
 
 ## 常见问题
-
-### Q: UIUtility中的Index方法和GameObject.Find有什么区别？
-
-A: UIUtility的Index方法专为UI组件设计，是GameObject.Find和GetComponent的组合优化版本，可以直接获取指定路径下的特定类型组件。它更高效，因为不需要分开调用Find和GetComponent，而且支持泛型形式，使用更简洁。
-
-### Q: 透明度设置方法有多种参数形式，应该使用哪一种？
-
-A: UIUtility提供了多种透明度设置方法，选择取决于你的具体需求：
-
-- 如果你习惯使用0-1范围的float值：`SetGraphicAlpha(0.5f)`
-- 如果你习惯使用0-255范围的int值：`SetGraphicAlpha(128)`
-- 如果需要设置子对象：`SetGraphicAlpha("ChildPath", 0.5f)` 或 `SetGraphicAlpha("ChildPath", 128)`
-
-选择最符合你当前工作流程的方法即可，它们最终都会转换为0-1范围的alpha值。
 
 更多问题，请查阅[问题反馈](../CONTRIBUTING.md#问题反馈)。
 

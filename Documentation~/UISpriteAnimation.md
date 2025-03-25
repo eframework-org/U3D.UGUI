@@ -3,38 +3,36 @@
 [![Version](https://img.shields.io/npm/v/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 [![Downloads](https://img.shields.io/npm/dm/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 
-UISpriteAnimation 是一个UI精灵动画组件，用于实现图片序列帧动画效果，支持从图集或单独精灵加载动画帧。
+UISpriteAnimation 是一个 UI 精灵动画组件，用于实现图片序列帧动画效果，支持从图集或单独精灵加载动画帧。
 
 ## 功能特性
 
-- 支持两种加载模式：图集模式和精灵模式
-- 支持按前缀筛选图集中的精灵
-- 可自定义动画帧率和循环播放设置
-- 支持在编辑器模式下预览动画效果
+- 加载模式：支持图集和精灵图片两种加载模式
+- 参数控制：支持自定义动画帧率和循环播放等设置
 
 ## 使用手册
 
-### 组件添加
+### 1. 基本使用
 
-1. 添加组件：
-   - 选择UI游戏对象（必须有Image组件）
-   - 在Inspector窗口点击"Add Component"
-   - 选择"UI/Sprite Animation"或搜索"UISpriteAnimation"
+添加组件：
+  - 在 `Hierarchey` 面板中选择或创建一个游戏对象（必须有Image组件）
+  - 在 `Inspector` 窗口点击 `Add Component`
+  - 选择 `UI/Sprite Animation` 以添加组件
 
-### 精灵模式选择
+### 2. 模式选择
 
 1. 图集模式(Atlas)：
-   - 从UIAtlas组件加载精灵
-   - 确保游戏对象上有UIAtlas组件
-   - 设置Prefix(前缀)筛选图集中的精灵
+   - 从 UIAtlas 组件加载精灵
+   - 确保游戏对象上有 UIAtlas 组件
+   - 设置 Prefix(前缀) 筛选图集中的精灵
    - 匹配前缀的精灵将按名称排序组成动画序列
 
 2. 精灵模式(Sprite)：
    - 直接使用精灵数组
-   - 将精灵数组赋值给Sprites属性
+   - 将精灵数组赋值给 Sprites 属性
    - 精灵将按数组顺序播放
 
-### 动画设置
+### 3. 动画设置
 
 1. 基本设置：
    ```csharp
@@ -51,7 +49,7 @@ UISpriteAnimation 是一个UI精灵动画组件，用于实现图片序列帧动
    spriteAnimation.Prefix = "run_";
    ```
 
-2. 运行时控制：
+2. 运行控制：
    ```csharp
    // 重置动画到第一帧并重新开始播放
    spriteAnimation.Reset();
@@ -65,32 +63,7 @@ UISpriteAnimation 是一个UI精灵动画组件，用于实现图片序列帧动
    int totalFrames = spriteAnimation.Frames;
    ```
 
-### 注意事项
-
-1. 图集模式要点：
-   - 精灵命名应有明确规律，便于按前缀筛选
-   - 精灵将按名称字母顺序排序，可考虑使用数字前缀如"run_01"、"run_02"确保顺序正确
-
-2. 性能考量：
-   - 对于复杂UI，建议将帧率控制在合理范围（15-30fps）
-
 ## 常见问题
-
-### Q: 图集模式和精灵模式有什么区别？
-
-A: 图集模式从UIAtlas组件中按前缀筛选精灵，适合管理大量动画；精灵模式直接使用指定的精灵数组，更直观但需要手动设置每一帧。图集模式便于资源管理，精灵模式则更灵活。
-
-### Q: 如何让动画只播放一次？
-
-A: 将Loop属性设置为false即可让动画播放一次后停止：
-
-```csharp
-// 获取组件引用
-UISpriteAnimation animation = GetComponent<UISpriteAnimation>();
-
-// 设置不循环
-animation.Loop = false;
-```
 
 更多问题，请查阅[问题反馈](../CONTRIBUTING.md#问题反馈)。
 

@@ -3,21 +3,17 @@
 [![Version](https://img.shields.io/npm/v/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 [![Downloads](https://img.shields.io/npm/dm/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 
-UIWrapContent 是一个循环列表内容组件，扩展自ScrollRect，提供高效的大数据列表和网格显示能力，通过元素复用降低内存占用。
+UIWrapContent 是一个拓展自 ScrollRect 的循环列表视图组件，提供了高效的大数据列表和网格显示能力，通过元素复用降低内存占用。
 
 ## 功能特性
 
-- 支持多种布局模式：垂直列表、水平列表、垂直网格、水平网格
-- 高效的元素复用机制，只创建可见区域所需的UI元素
-- 支持单一原型和多原型模式，适应不同的列表需求
-- 提供灵活的适配器接口，便于自定义数据绑定逻辑
-- 自动处理元素的创建、回收和位置更新
-- 支持动态调整内容尺寸和滚动位置
-- 支持元素缓存，减少重复创建开销
+- 多种布局模式：支持垂直列表、水平列表、垂直网格、水平网格四种布局
+- 元素复用机制：支持元素复用，只创建可见区域所需的 UI 单元格元素
+- 适配器支持：提供灵活的适配器接口，便于自定义数据绑定逻辑
 
 ## 使用手册
 
-### 适配器实现
+### 1. 适配器实现
 
 1. 简单适配器：
    ```csharp
@@ -74,7 +70,7 @@ UIWrapContent 是一个循环列表内容组件，扩展自ScrollRect，提供�
    wrapContent.Adapter = new MyAdapter(dataList);
    ```
 
-### 运行时控制
+### 2. 运行时控制
 
 1. 滚动控制：
    ```csharp
@@ -100,13 +96,14 @@ UIWrapContent 是一个循环列表内容组件，扩展自ScrollRect，提供�
 
 ## 常见问题
 
-### Q: UIWrapContent与传统的ScrollRect有什么区别？
+### 1. UIWrapContent 组件与 ScrollRect 组件有什么区别？
 
-A: 传统ScrollRect会为每个数据项创建一个UI元素，当数据量大时会导致性能问题和内存占用过高。UIWrapContent采用元素复用机制，只创建可见区域所需的UI元素，大大提高了性能，特别适合大数据列表。
+ScrollRect 会为每个数据项创建一个 UI 单元格元素，当数据量大时会导致性能问题和内存占用过高。  
+UIWrapContent 采用元素复用机制，只创建可见区域所需的 UI 单元格元素，特别适合大数据列表。
 
-### Q: 如何优化UIWrapContent的性能？
+### 2. 如何优化 UIWrapContent 组件的性能？
 
-A: 以下是一些优化建议：
+以下是一些优化建议：
 
 1. 减少单元格预制体的复杂度，尽量使用简单的UI结构
 2. 适当设置缓冲区大小，避免频繁创建和销毁单元格

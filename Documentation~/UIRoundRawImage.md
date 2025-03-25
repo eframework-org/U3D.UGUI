@@ -3,27 +3,24 @@
 [![Version](https://img.shields.io/npm/v/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 [![Downloads](https://img.shields.io/npm/dm/org.eframework.u3d.ugui)](https://www.npmjs.com/package/org.eframework.u3d.ugui)
 
-UIRoundRawImage 是一个圆角原始图片组件，继承自Unity的RawImage，通过自定义网格实现图片的圆角效果。
+UIRoundRawImage 是一个圆角图片组件，继承自 RawImage 组件，通过自定义网格实现图片的圆角效果。
 
 ## 功能特性
 
-- 为UI原始图片添加圆角效果
+- 自定义圆角半径和平滑度
 - 自动计算和生成圆角网格
-- 支持自定义圆角半径和平滑度
 
 ## 使用手册
 
-### 组件添加
+### 1. 基本使用
 
-1. 添加到游戏对象：
-   - 在UI界面中选择或创建一个游戏对象
-   - 在Inspector窗口点击"Add Component"
-   - 选择"UI/Round Raw Image"或搜索"UIRoundRawImage"
-   - 组件会自动替代默认的RawImage，提供圆角效果
+1. 添加组件：
+  - 在 `Hierarchey` 面板中选择或创建一个游戏对象
+  - 在 `Inspector` 窗口点击 `Add Component`
+  - 选择 `UI/Round Raw Image` 以添加组件
+  - 组件会自动替代默认的 `RawImage`，提供圆角效果
 
-### 属性设置
-
-1. 自定义圆角效果：
+2. 代码控制：
    ```csharp
    // 控制圆角大小（值越小圆角越大，默认为2）
    roundRawImage.Radius = 2f;
@@ -32,21 +29,17 @@ UIRoundRawImage 是一个圆角原始图片组件，继承自Unity的RawImage，
    roundRawImage.TriangleNum = 10;
    ```
 
-### 注意事项
+### 2. 注意事项
 
 1. 性能考量：
-   - TriangleNum数值不宜设置过高，会增加渲染开销
+   - TriangleNum 数值不宜设置过高，会增加渲染开销
    - 对于不需要高度平滑的圆角，推荐保持默认值
 
 2. 尺寸调整：
-   - 在调整RectTransform的大小时，圆角会自动适应
-   - 在极端宽高比下可能需要手动调整Radius以获得更好的效果
+   - 在调整 RectTransform 的大小时，圆角会自动适应
+   - 在极端宽高比下可能需要手动调整 Radius 以获得更好的效果
 
 ## 常见问题
-
-### Q: UIRoundRawImage和普通RawImage有什么区别？
-
-A: 普通RawImage显示矩形图像，而UIRoundRawImage在保留RawImage所有功能的同时，通过自定义网格生成圆角效果，使UI界面更加美观。
 
 更多问题，请查阅[问题反馈](../CONTRIBUTING.md#问题反馈)。
 

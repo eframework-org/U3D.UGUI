@@ -8,15 +8,41 @@ using UnityEngine;
 namespace EFramework.UnityUI
 {
     /// <summary>
-    /// UI 图集组件，用于管理和获取 Sprite 资源。
+    /// UIAtlas 是一个用于管理 Sprite 资源的组件，提供了 TexturePacker 图集打包与 Sprite 查找功能。
     /// </summary>
     /// <remarks>
     /// <code>
     /// 功能特性
-    /// - 集中管理多个 Sprite 资源，便于统一访问
-    /// - 提供高效的 Sprite 名称查找功能
-    /// - 自动缓存 Sprite 索引，优化重复查询性能
-    /// - 与 UIAtlasEditor 配合使用，支持自动导入和更新
+    /// - 图集资源导入：基于 TexturePacker 实现了自动图集导入功能
+    /// - 图集资源管理：通过名称检索 Sprite 资源，优化重复查询性能
+    /// 
+    /// 使用手册
+    /// 1. 创建图集
+    /// 
+    ///     通过编辑器创建图集：
+    ///     1. 在 Project 窗口中选择目标文件夹
+    ///     2. 右键 Create/2D/Sheet Atlas
+    ///     3. 选择包含精灵图片的素材目录
+    ///     4. 编辑器将自动创建 UIAtlas 预制体
+    /// 
+    /// 2. 资源导入
+    /// 
+    ///     支持自动和手动两种方式导入图集：
+    ///     1. 监听资源导入事件触发自动化导入流程
+    ///     2. 右键 UIAtlas 资源并 Reimport
+    /// 
+    /// 3. 图集使用
+    /// 
+    ///     // 获取图集组件
+    ///     UIAtlas atlas = GetComponent&lt;UIAtlas&gt;();
+    ///     // 或者加载图集资源
+    ///     UIAtlas atlas = Resources.Load&lt;UIAtlas&gt;("UI/CommonAtlas");
+    /// 
+    ///     // 通过名称获取 Sprite
+    ///     Sprite iconSprite = atlas.GetSprite("IconName");
+    /// 
+    ///     // 使用获取的 Sprite
+    ///     image.sprite = iconSprite;
     /// </code>
     /// 更多信息请参考模块文档。
     /// </remarks>
