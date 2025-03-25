@@ -132,13 +132,13 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 计算顶点的UV坐标。
-        /// 将网格顶点位置转换为纹理UV坐标，适应RawImage的纹理映射。
+        /// 计算顶点的 UV 坐标。
+        /// 将网格顶点位置转换为纹理 UV 坐标，适应 RawImage 的纹理映射。
         /// </summary>
         /// <param name="vhs">顶点位置数组</param>
         /// <param name="tw">纹理宽度</param>
         /// <param name="th">纹理高度</param>
-        /// <returns>对应的UV坐标数组</returns>
+        /// <returns>对应的 UV 坐标数组</returns>
         protected Vector2[] GetTextureUVS(Vector2[] vhs, float tw, float th)
         {
             int count = vhs.Length;

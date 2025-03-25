@@ -7,12 +7,11 @@ using NUnit.Framework;
 using EFramework.UnityUI;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TestUIWrapContentEditor
 {
     [Test]
-    public void CreateTemplate()
+    public void Create()
     {
         // 执行菜单操作创建Wrap Content
         EditorApplication.ExecuteMenuItem("GameObject/UI/Wrap Content");

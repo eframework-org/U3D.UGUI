@@ -56,7 +56,7 @@ public class TestUIWrapContent
     }
 
     [TearDown]
-    public void TearDown()
+    public void Reset()
     {
         // 清理测试对象
         Object.DestroyImmediate(canvasObj);

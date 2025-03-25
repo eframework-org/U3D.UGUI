@@ -30,7 +30,7 @@ public class TestUIEventListener
     }
 
     [Test]
-    public void EventCallbacks()
+    public void Event()
     {
         // 创建测试对象
         var gameObject = new GameObject("TestObject");
@@ -93,7 +93,7 @@ public class TestUIEventListener
     }
 
     [Test]
-    public void FuncCallbacks()
+    public void Func()
     {
         // 创建测试对象
         var gameObject = new GameObject("TestObject");
@@ -156,7 +156,7 @@ public class TestUIEventListener
     }
 
     [Test]
-    public void MultipleEventHandlers()
+    public void Mixed()
     {
         // 创建测试对象
         var gameObject = new GameObject("TestObject");
@@ -178,7 +178,7 @@ public class TestUIEventListener
     }
 
     [Test]
-    public void IsPressed()
+    public void Pressed()
     {
         // 创建测试对象
         var gameObject = new GameObject("TestObject");

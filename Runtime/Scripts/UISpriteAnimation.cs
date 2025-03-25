@@ -9,16 +9,63 @@ using UnityEngine.UI;
 namespace EFramework.UnityUI
 {
     /// <summary>
-    /// UI精灵动画组件。
-    /// 用于实现图片序列帧动画效果，支持从图集或单独精灵加载动画帧。
+    /// UISpriteAnimation 是一个 UI 精灵动画组件，用于实现图片序列帧动画效果，支持从图集或单独精灵加载动画帧。
     /// </summary>
     /// <remarks>
     /// <code>
     /// 功能特性
-    /// - 支持两种加载模式：图集模式和精灵模式
-    /// - 支持按前缀筛选图集中的精灵
-    /// - 可自定义动画帧率和循环播放设置
-    /// - 支持在编辑器模式下预览动画效果
+    /// - 加载模式：支持图集和精灵图片两种加载模式
+    /// - 参数控制：支持自定义动画帧率和循环播放等设置
+    /// 
+    /// 使用手册
+    /// 1. 基本使用
+    /// 
+    ///     添加组件：
+    ///       - 在 Hierarchey 面板中选择或创建一个游戏对象（必须有Image组件）
+    ///       - 在 Inspector 窗口点击 Add Component
+    ///       - 选择 UI/Sprite Animation 以添加组件
+    /// 
+    /// 2. 模式选择
+    /// 
+    ///     1. 图集模式(Atlas)：
+    ///         - 从 UIAtlas 组件加载精灵
+    ///         - 确保游戏对象上有 UIAtlas 组件
+    ///         - 设置 Prefix(前缀) 筛选图集中的精灵
+    ///         - 匹配前缀的精灵将按名称排序组成动画序列
+    /// 
+    ///     2. 精灵模式(Sprite)：
+    ///         - 直接使用精灵数组
+    ///         - 将精灵数组赋值给 Sprites 属性
+    ///         - 精灵将按数组顺序播放
+    /// 
+    /// 3. 动画设置
+    /// 
+    ///     1. 基本设置：
+    /// 
+    ///         // 设置动画帧率（每秒帧数）
+    ///         spriteAnimation.FrameRate = 30;
+    ///         
+    ///         // 设置是否循环播放
+    ///         spriteAnimation.Loop = true;
+    ///         
+    ///         // 设置精灵数组（精灵模式下）
+    ///         spriteAnimation.Sprites = mySprites;
+    ///         
+    ///         // 设置精灵名称前缀（图集模式下）
+    ///         spriteAnimation.Prefix = "run_";
+    /// 
+    ///     2. 运行控制：
+    /// 
+    ///         // 重置动画到第一帧并重新开始播放
+    ///         spriteAnimation.Reset();
+    ///         
+    ///         // 检查动画是否处于活动状态
+    ///         if (spriteAnimation.Active) {
+    ///             Debug.Log("动画正在播放");
+    ///         }
+    ///         
+    ///         // 获取动画总帧数
+    ///         int totalFrames = spriteAnimation.Frames;
     /// </code>
     /// 更多信息请参考模块文档。
     /// </remarks>
@@ -34,7 +81,7 @@ namespace EFramework.UnityUI
         public enum SpriteMode
         {
             /// <summary>
-            /// 图集模式：从UIAtlas组件获取精灵序列。
+            /// 图集模式：从 UIAtlas 组件获取精灵序列。
             /// </summary>
             Atlas,
 
@@ -87,13 +134,13 @@ namespace EFramework.UnityUI
         private readonly List<string> spriteNames = new();
 
         /// <summary>
-        /// 引用当前游戏对象上的Image组件。
+        /// 引用当前游戏对象上的 Image 组件。
         /// 用于显示动画帧。
         /// </summary>
         private Image image;
 
         /// <summary>
-        /// 引用当前游戏对象上的UIAtlas组件。
+        /// 引用当前游戏对象上的 UIAtlas 组件。
         /// 在图集模式下用于获取精灵。
         /// </summary>
         private UIAtlas atlas;
@@ -154,13 +201,13 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 组件启动时初始化。
-        /// 调用Rebuild方法准备动画序列。
+        /// 调用 Rebuild 方法准备动画序列。
         /// </summary>
         private void Start() { Rebuild(); }
 
         /// <summary>
         /// 每帧更新动画播放状态。
-        /// 根据帧率和时间计算当前应显示的帧，并更新Image组件。
+        /// 根据帧率和时间计算当前应显示的帧，并更新 Image 组件。
         /// </summary>
         private void Update()
         {

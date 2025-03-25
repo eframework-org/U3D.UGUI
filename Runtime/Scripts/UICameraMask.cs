@@ -53,14 +53,14 @@ namespace EFramework.UnityUI
         public static UICameraMask Instance;
 
         /// <summary>
-        /// 屏幕遮罩的Canvas组，用于控制透明度。
-        /// 需要在Inspector中手动赋值。
+        /// 屏幕遮罩的 Canvas 组，用于控制透明度。
+        /// 需要在 Inspector 中手动赋值。
         /// </summary>
         public CanvasGroup ScreenMask;
 
         /// <summary>
         /// 遮罩图像组件。
-        /// 用于设置遮罩的颜色，自动从ScreenMask获取。
+        /// 用于设置遮罩的颜色，自动从 ScreenMask 获取。
         /// </summary>
         private Image image;
 
@@ -118,7 +118,7 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 处理遮罩透明度的渐变效果。
-        /// 根据isPositive标志决定是淡入还是淡出效果。
+        /// 根据 isPositive 标志决定是淡入还是淡出效果。
         /// </summary>
         private void Process()
         {

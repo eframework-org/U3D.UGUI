@@ -138,8 +138,8 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 单元格原型
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
-            /// <returns>对应类型的原型RectTransform</returns>
+            /// <param name="type">单元格类型 ID </param>
+            /// <returns>对应类型的原型 RectTransform </returns>
             RectTransform GetCellZygote(int type);
 
             /// <summary>
@@ -150,13 +150,13 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 设置单元格
             /// </summary>
-            /// <param name="cell">单元格的RectTransform组件</param>
+            /// <param name="cell">单元格的 RectTransform 组件</param>
             /// <param name="index">单元格索引</param>
             void SetCellData(RectTransform cell, int index);
         }
 
         /// <summary>
-        /// 简单视图适配器（获取Content首个子物体为单元格原型）
+        /// 简单视图适配器（获取 Content 的第一个子物体作为单元格原型）
         /// </summary>
         public class ISimpleAdapter : ICustomAdapter
         {
@@ -193,14 +193,14 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 设置单元格
             /// </summary>
-            /// <param name="cell">单元格的RectTransform组件</param>
+            /// <param name="cell">单元格的 RectTransform 组件</param>
             /// <param name="index">单元格索引</param>
             public void SetCellData(RectTransform cell, int index) { onSetCellData.Invoke(cell, index); }
 
             /// <summary>
             /// 创建简单视图适配器实例。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="onGetCellCount">获取单元格总数的委托</param>
             /// <param name="onSetCellData">设置单元格数据的委托</param>
             public ISimpleAdapter(UIWrapContent wrapper, Func<int> onGetCellCount, Action<RectTransform, int> onSetCellData)
@@ -275,7 +275,7 @@ namespace EFramework.UnityUI
             public static readonly CellInfo Default = new(null, 0);
 
             /// <summary>
-            /// 单元格的RectTransform组件。
+            /// 单元格的 RectTransform 组件。
             /// </summary>
             public readonly RectTransform Transform;
 
@@ -287,7 +287,7 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 创建单元格信息实例。
             /// </summary>
-            /// <param name="transform">单元格的RectTransform组件</param>
+            /// <param name="transform">单元格的 RectTransform 组件</param>
             /// <param name="type">单元格类型ID</param>
             public CellInfo(RectTransform transform, int type)
             {
@@ -334,7 +334,7 @@ namespace EFramework.UnityUI
             public readonly Vector2 Pivot;
 
             /// <summary>
-            /// 单元格原型的RectTransform组件。
+            /// 单元格原型的 RectTransform 组件。
             /// </summary>
             public readonly RectTransform Zygote;
 
@@ -347,7 +347,7 @@ namespace EFramework.UnityUI
             /// <param name="anchorMin">锚点最小值</param>
             /// <param name="anchorMax">锚点最大值</param>
             /// <param name="pivot">中心点</param>
-            /// <param name="zygote">单元格原型的RectTransform组件</param>
+            /// <param name="zygote">单元格原型的 RectTransform 组件</param>
             public CellZygote(int type, float width, float height, Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot, RectTransform zygote)
             {
                 Type = type;
@@ -417,7 +417,7 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 计算单元格位置偏移，此接口的开销不定，不建议频繁请求
             /// </summary>
-            /// <param name="cell">单元格RectTransform</param>
+            /// <param name="cell">单元格 RectTransform</param>
             /// <param name="index">单元格索引</param>
             /// <returns>计算出的位置偏移</returns>
             public abstract Vector2 CalcCellOffset(RectTransform cell, int index);
@@ -425,7 +425,7 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 获取单元格原型。
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
+            /// <param name="type">单元格类型 ID</param>
             /// <returns>单元格原型数据</returns>
             public abstract CellZygote GetCellZygote(int type);
 
@@ -438,20 +438,20 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 处理滚动值变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="v">新的滚动值</param>
             public abstract void OnValueChanged(UIWrapContent wrapper, Vector2 v);
 
             /// <summary>
             /// 处理适配器变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             public abstract void OnAdapterChanged(UIWrapContent wrapper);
 
             /// <summary>
             /// 滚动到指定的归一化位置。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="normalized">归一化位置值（0-1）</param>
             /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为true</param>
             public abstract void ScrollTo(UIWrapContent wrapper, float normalized, bool applyNormalized = true);
@@ -516,13 +516,13 @@ namespace EFramework.UnityUI
                 if (!ds.SingleZygote) throw new ArgumentException("LayoutHorizontalGrid is unsupported in multiple zygote mode.");
                 var zygote = Recyle.GetCellZygote(0);
                 var column = (count - 1) / Row + 1;
-                return zygote.Width * column + (column - 1) * HorizontalSpace; // [20230111]： 左右不留间隔
+                return zygote.Width * column + (column - 1) * HorizontalSpace;
             }
 
             /// <summary>
             /// 计算指定索引单元格的位置偏移
             /// </summary>
-            /// <param name="cell">单元格RectTransform</param>
+            /// <param name="cell">单元格 RectTransform</param>
             /// <param name="index">单元格索引</param>
             /// <returns>计算出的位置偏移</returns>
             /// <exception cref="ArgumentException">当适配器不是单一原型模式时抛出异常</exception>
@@ -537,7 +537,7 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 获取单元格原型数据
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
+            /// <param name="type">单元格类型 ID</param>
             /// <returns>单元格原型数据</returns>
             public override CellZygote GetCellZygote(int type)
             {
@@ -585,9 +585,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理滚动值变化事件
+            /// 处理滚动值变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="v">新的滚动值</param>
             public override void OnValueChanged(UIWrapContent wrapper, Vector2 v)
             {
@@ -607,13 +607,13 @@ namespace EFramework.UnityUI
             /// <summary>
             /// 处理适配器变化事件
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             public override void OnAdapterChanged(UIWrapContent wrapper) { ScrollTo(wrapper, wrapper.horizontalNormalizedPosition); }
 
             /// <summary>
             /// 滚动到指定的归一化位置
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="normalized">归一化位置值（0-1）</param>
             /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为true</param>
             public override void ScrollTo(UIWrapContent wrapper, float normalized, bool applyNormalized = true)
@@ -699,7 +699,7 @@ namespace EFramework.UnityUI
             #region 私有方法
 
             /// <summary>
-            /// 从缓存池获取单元格并添加到已使用池
+            /// 从缓存池获取单元格并添加到已使用池。
             /// </summary>
             /// <param name="index">单元格索引</param>
             /// <param name="cellWidth">单元格宽度</param>
@@ -718,7 +718,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 回收标记为待回收的单元格
+            /// 回收标记为待回收的单元格。
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void RecyclingCellFromList()
@@ -733,7 +733,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 计算单元格在网格中的位置偏移
+            /// 计算单元格在网格中的位置偏移。
             /// </summary>
             /// <param name="index">单元格索引</param>
             /// <param name="cellWidth">单元格宽度</param>
@@ -753,12 +753,12 @@ namespace EFramework.UnityUI
             #region 私有属性
 
             /// <summary>
-            /// 最小移动距离，小于此距离的滚动变化将被忽略
+            /// 最小移动距离，小于此距离的滚动变化将被忽略。
             /// </summary>
             private const float MinMovingDistance = 1f;
 
             /// <summary>
-            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格
+            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格。
             /// </summary>
             private const int MinCellCount = 6;
 
@@ -786,7 +786,7 @@ namespace EFramework.UnityUI
         public class LayoutVerticalGrid : LayoutBase
         {
             /// <summary>
-            /// 创建垂直网格布局实例
+            /// 创建垂直网格布局实例。
             /// </summary>
             /// <param name="column">网格的列数</param>
             /// <param name="horizontalSpace">水平间距</param>
@@ -800,34 +800,34 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 网格的列数
+            /// 网格的列数。
             /// </summary>
             public int Column { get; }
 
             /// <summary>
-            /// 水平间距
+            /// 水平间距。
             /// </summary>
             public float HorizontalSpace { get; }
 
             /// <summary>
-            /// 垂直间距
+            /// 垂直间距。
             /// </summary>
             public float VerticalSpace { get; }
 
             /// <summary>
-            /// 最小覆盖率，用于控制预加载区域大小
+            /// 最小覆盖率，用于控制预加载区域大小。
             /// </summary>
             public override float MinCoverage => 1.5f;
 
             #region 抽象实现
 
             /// <summary>
-            /// 是否为垂直滚动，垂直网格返回true
+            /// 是否为垂直滚动，垂直网格返回 true。
             /// </summary>
             public override bool Vertical => true;
 
             /// <summary>
-            /// 计算内容在垂直方向的总长度
+            /// 计算内容在垂直方向的总长度。
             /// </summary>
             /// <returns>内容总长度</returns>
             /// <exception cref="ArgumentException">当适配器不是单一原型模式时抛出异常</exception>
@@ -858,9 +858,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 获取单元格原型数据
+            /// 获取单元格原型数据。
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
+            /// <param name="type">单元格类型 ID</param>
             /// <returns>单元格原型数据</returns>
             public override CellZygote GetCellZygote(int type)
             {
@@ -880,7 +880,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 初始化布局并创建初始可见单元格
+            /// 初始化布局并创建初始可见单元格。
             /// </summary>
             public override void Setup()
             {
@@ -908,9 +908,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理滚动值变化事件
+            /// 处理滚动值变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="v">新的滚动值</param>
             public override void OnValueChanged(UIWrapContent wrapper, Vector2 v)
             {
@@ -929,17 +929,17 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理适配器变化事件
+            /// 处理适配器变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             public override void OnAdapterChanged(UIWrapContent wrapper) { ScrollTo(wrapper, 1 - wrapper.verticalNormalizedPosition); }
 
             /// <summary>
-            /// 滚动到指定的归一化位置
+            /// 滚动到指定的归一化位置。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例</param>
             /// <param name="normalized">归一化位置值（0-1）</param>
-            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为true</param>
+            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为 true</param>
             public override void ScrollTo(UIWrapContent wrapper, float normalized, bool applyNormalized = true)
             {
                 var adapter = Recyle.Adapter;
@@ -1023,7 +1023,7 @@ namespace EFramework.UnityUI
             #region 私有方法
 
             /// <summary>
-            /// 从缓存池获取单元格并添加到已使用池
+            /// 从缓存池获取单元格并添加到已使用池。
             /// </summary>
             /// <param name="index">单元格索引</param>
             /// <param name="cellWidth">单元格宽度</param>
@@ -1057,7 +1057,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 计算单元格在网格中的位置偏移
+            /// 计算单元格在网格中的位置偏移。
             /// </summary>
             /// <param name="index">单元格索引</param>
             /// <param name="cellWidth">单元格宽度</param>
@@ -1077,27 +1077,27 @@ namespace EFramework.UnityUI
             #region 私有属性
 
             /// <summary>
-            /// 最小移动距离，小于此距离的滚动变化将被忽略
+            /// 最小移动距离，小于此距离的滚动变化将被忽略。
             /// </summary>
             private const float MinMovingDistance = 1f;
 
             /// <summary>
-            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格
+            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格。
             /// </summary>
             private const int MinCellCount = 6;
 
             /// <summary>
-            /// 待回收单元格列表
+            /// 待回收单元格列表。
             /// </summary>
             private readonly List<CellItem> recyclingPool = new();
 
             /// <summary>
-            /// 上一次的垂直偏移位置
+            /// 上一次的垂直偏移位置。
             /// </summary>
             private float prevOffset;
 
             /// <summary>
-            /// 预加载区域的边缘值
+            /// 预加载区域的边缘值。
             /// </summary>
             private float edge;
 
@@ -1110,7 +1110,7 @@ namespace EFramework.UnityUI
         public class LayoutHorizontalList : LayoutBase
         {
             /// <summary>
-            /// 创建水平列表布局实例
+            /// 创建水平列表布局实例。
             /// </summary>
             /// <param name="space">单元格间距</param>
             /// <param name="leftPadding">左侧内边距</param>
@@ -1123,29 +1123,29 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 单元格间距
+            /// 单元格间距。
             /// </summary>
             public float Space { get; }
 
             /// <summary>
-            /// 左侧内边距
+            /// 左侧内边距。
             /// </summary>
             public float LeftPadding { get; }
 
             /// <summary>
-            /// 右侧内边距
+            /// 右侧内边距。
             /// </summary>
             public float RightPadding { get; }
 
             #region 抽象实现
 
             /// <summary>
-            /// 是否为垂直滚动，水平列表返回false
+            /// 是否为垂直滚动，水平列表返回 false。
             /// </summary>
             public override bool Vertical => false;
 
             /// <summary>
-            /// 计算内容在水平方向的总长度
+            /// 计算内容在水平方向的总长度。
             /// </summary>
             /// <returns>内容总长度</returns>
             public override float CalcContentLengthOfSlidingDir()
@@ -1167,9 +1167,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 计算指定索引单元格的位置偏移
+            /// 计算指定索引单元格的位置偏移。
             /// </summary>
-            /// <param name="cell">单元格RectTransform</param>
+            /// <param name="cell">单元格 RectTransform</param>
             /// <param name="index">单元格索引</param>
             /// <returns>计算出的位置偏移</returns>
             public override Vector2 CalcCellOffset(RectTransform cell, int index)
@@ -1190,9 +1190,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 获取单元格原型数据
+            /// 获取单元格原型数据。
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
+            /// <param name="type">单元格类型 ID</param>
             /// <returns>单元格原型数据</returns>
             public override CellZygote GetCellZygote(int type)
             {
@@ -1212,7 +1212,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 初始化布局并创建初始可见单元格
+            /// 初始化布局并创建初始可见单元格。
             /// </summary>
             public override void Setup()
             {
@@ -1241,10 +1241,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理滚动值变化事件
+            /// 处理滚动值变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
-            /// <param name="v">新的滚动值</param>
+            /// <param name="wrapper">UIWrapContent 实例。</param>
+            /// <param name="v">新的滚动值。</param>
             public override void OnValueChanged(UIWrapContent wrapper, Vector2 v)
             {
                 var normalized = wrapper.horizontalNormalizedPosition;
@@ -1261,17 +1261,17 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理适配器变化事件
+            /// 处理适配器变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例。</param>
             public override void OnAdapterChanged(UIWrapContent wrapper) { ScrollTo(wrapper, wrapper.horizontalNormalizedPosition); }
 
             /// <summary>
-            /// 滚动到指定的归一化位置
+            /// 滚动到指定的归一化位置。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
-            /// <param name="normalized">归一化位置值（0-1）</param>
-            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为true</param>
+            /// <param name="wrapper">UIWrapContent 实例。</param>
+            /// <param name="normalized">归一化位置值（0-1）。</param>
+            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为 true。</param>
             public override void ScrollTo(UIWrapContent wrapper, float normalized, bool applyNormalized = true)
             {
                 var contentWidth = Recyle.Content.rect.width;
@@ -1344,11 +1344,11 @@ namespace EFramework.UnityUI
             #region 私有方法
 
             /// <summary>
-            /// 在指定方向绑定单元格
+            /// 在指定方向绑定单元格。
             /// </summary>
-            /// <param name="item">起始单元格项</param>
-            /// <param name="distance">绑定距离</param>
-            /// <param name="littleIndex">是否向小索引方向绑定</param>
+            /// <param name="item">起始单元格项。</param>
+            /// <param name="distance">绑定距离。</param>
+            /// <param name="littleIndex">是否向小索引方向绑定。</param>
             private void BindCell(CellItem item, float distance, bool littleIndex)
             {
                 var adapter = Recyle.Adapter;
@@ -1394,7 +1394,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 回收标记为待回收的单元格
+            /// 回收标记为待回收的单元格。
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void RecyclingCellFromList()
@@ -1413,27 +1413,27 @@ namespace EFramework.UnityUI
             #region 私有属性
 
             /// <summary>
-            /// 最小移动距离，小于此距离的滚动变化将被忽略
+            /// 最小移动距离，小于此距离的滚动变化将被忽略。
             /// </summary>
             private const float MinMovingDistance = 1f;
 
             /// <summary>
-            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格
+            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格。
             /// </summary>
             private const int MinCellCount = 3;
 
             /// <summary>
-            /// 待回收单元格列表
+            /// 待回收单元格列表。
             /// </summary>
             private readonly List<CellItem> _recyclingPool = new List<CellItem>();
 
             /// <summary>
-            /// 上一次的水平偏移位置
+            /// 上一次的水平偏移位置。
             /// </summary>
             private float _prevOffset;
 
             /// <summary>
-            /// 预加载区域的边缘值
+            /// 预加载区域的边缘值。
             /// </summary>
             private float _edge;
 
@@ -1441,16 +1441,16 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 垂直列表
+        /// 垂直列表。
         /// </summary>
         public class LayoutVerticalList : LayoutBase
         {
             /// <summary>
-            /// 创建垂直列表布局实例
+            /// 创建垂直列表布局实例。
             /// </summary>
-            /// <param name="space">单元格间距</param>
-            /// <param name="topPadding">顶部内边距</param>
-            /// <param name="bottomPadding">底部内边距</param>
+            /// <param name="space">单元格间距。</param>
+            /// <param name="topPadding">顶部内边距。</param>
+            /// <param name="bottomPadding">底部内边距。</param>
             public LayoutVerticalList(float space, float topPadding, float bottomPadding)
             {
                 Space = space;
@@ -1459,31 +1459,31 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 单元格间距
+            /// 单元格间距。
             /// </summary>
             public float Space { get; }
 
             /// <summary>
-            /// 顶部内边距
+            /// 顶部内边距。
             /// </summary>
             public float TopPadding { get; }
 
             /// <summary>
-            /// 底部内边距
+            /// 底部内边距。
             /// </summary>
             public float BottomPadding { get; }
 
             #region 抽象实现
 
             /// <summary>
-            /// 是否为垂直滚动，垂直列表返回true
+            /// 是否为垂直滚动，垂直列表返回 true。
             /// </summary>
             public override bool Vertical => true;
 
             /// <summary>
-            /// 计算内容在垂直方向的总长度
+            /// 计算内容在垂直方向的总长度。
             /// </summary>
-            /// <returns>内容总长度</returns>
+            /// <returns>内容总长度。</returns>
             public override float CalcContentLengthOfSlidingDir()
             {
                 var ds = Recyle.Adapter;
@@ -1503,11 +1503,11 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 计算指定索引单元格的位置偏移
+            /// 计算指定索引单元格的位置偏移。
             /// </summary>
-            /// <param name="cell">单元格RectTransform</param>
-            /// <param name="index">单元格索引</param>
-            /// <returns>计算出的位置偏移</returns>
+            /// <param name="cell">单元格 RectTransform。</param>
+            /// <param name="index">单元格索引。</param>
+            /// <returns>计算出的位置偏移。</returns>
             public override Vector2 CalcCellOffset(RectTransform cell, int index)
             {
                 if (index < 1) return Vector2.zero;
@@ -1526,10 +1526,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 获取单元格原型数据
+            /// 获取单元格原型数据。
             /// </summary>
-            /// <param name="type">单元格类型ID</param>
-            /// <returns>单元格原型数据</returns>
+            /// <param name="type">单元格类型 ID。</param>
+            /// <returns>单元格原型数据。</returns>
             public override CellZygote GetCellZygote(int type)
             {
                 var zygote = Recyle.Adapter.GetCellZygote(type);
@@ -1548,7 +1548,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 初始化布局并创建初始可见单元格
+            /// 初始化布局并创建初始可见单元格。
             /// </summary>
             public override void Setup()
             {
@@ -1577,10 +1577,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理滚动值变化事件
+            /// 处理滚动值变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
-            /// <param name="v">新的滚动值</param>
+            /// <param name="wrapper">UIWrapContent 实例。</param>
+            /// <param name="v">新的滚动值。</param>
             public override void OnValueChanged(UIWrapContent wrapper, Vector2 v)
             {
                 var normalized = wrapper.verticalNormalizedPosition;
@@ -1598,17 +1598,17 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理适配器变化事件
+            /// 处理适配器变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent 实例。</param>
             public override void OnAdapterChanged(UIWrapContent wrapper) { ScrollTo(wrapper, 1 - wrapper.verticalNormalizedPosition); }
 
             /// <summary>
-            /// 滚动到指定的归一化位置
+            /// 滚动到指定的归一化位置。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
-            /// <param name="normalized">归一化位置值（0-1）</param>
-            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为true</param>
+            /// <param name="wrapper">UIWrapContent实例。</param>
+            /// <param name="normalized">归一化位置值（0-1）。</param>
+            /// <param name="applyNormalized">是否应用归一化值到滚动条，默认为 true。</param>
             public override void ScrollTo(UIWrapContent wrapper, float normalized, bool applyNormalized = true)
             {
                 var contentHeight = Recyle.Content.rect.height;
@@ -1681,11 +1681,11 @@ namespace EFramework.UnityUI
             #region 私有方法
 
             /// <summary>
-            /// 在指定方向绑定单元格
+            /// 在指定方向绑定单元格。
             /// </summary>
-            /// <param name="item">起始单元格项</param>
-            /// <param name="distance">绑定距离</param>
-            /// <param name="littleIndex">是否向小索引方向绑定</param>
+            /// <param name="item">起始单元格项。</param>
+            /// <param name="distance">绑定距离。</param>
+            /// <param name="littleIndex">是否向小索引方向绑定。</param>
             private void BindCell(CellItem item, float distance, bool littleIndex)
             {
                 var adapter = Recyle.Adapter;
@@ -1731,7 +1731,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 回收标记为待回收的单元格
+            /// 回收标记为待回收的单元格。
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void RecyclingCellFromList()
@@ -1750,27 +1750,27 @@ namespace EFramework.UnityUI
             #region 私有属性
 
             /// <summary>
-            /// 最小移动距离，小于此距离的滚动变化将被忽略
+            /// 最小移动距离，小于此距离的滚动变化将被忽略。
             /// </summary>
             private const float MinMovingDistance = 1f;
 
             /// <summary>
-            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格
+            /// 最小单元格数量，即使未达到视口覆盖区域，也至少创建这么多单元格。
             /// </summary>
             private const int MinCellCount = 3;
 
             /// <summary>
-            /// 待回收单元格列表
+            /// 待回收单元格列表。
             /// </summary>
             private readonly List<CellItem> _recyclingPool = new List<CellItem>();
 
             /// <summary>
-            /// 上一次的垂直偏移位置
+            /// 上一次的垂直偏移位置。
             /// </summary>
             private float _prevOffset;
 
             /// <summary>
-            /// 预加载区域的边缘值
+            /// 预加载区域的边缘值。
             /// </summary>
             private float _edge;
 
@@ -1778,13 +1778,13 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 循环模块
+        /// 循环模块。
         /// </summary>
         public class RecyleModule : IComparer<CellItem>
         {
             #region 公开成员、属性
             /// <summary>
-            /// 获取或设置数据适配器
+            /// 获取或设置数据适配器。
             /// </summary>
             public ICustomAdapter Adapter
             {
@@ -1794,7 +1794,7 @@ namespace EFramework.UnityUI
             protected ICustomAdapter adapter;
 
             /// <summary>
-            /// 获取或设置视口RectTransform
+            /// 获取或设置视口RectTransform。
             /// </summary>
             public RectTransform Viewport
             {
@@ -1804,7 +1804,7 @@ namespace EFramework.UnityUI
             protected RectTransform viewport;
 
             /// <summary>
-            /// 获取或设置内容RectTransform
+            /// 获取或设置内容RectTransform。
             /// </summary>
             public RectTransform Content
             {
@@ -1814,7 +1814,7 @@ namespace EFramework.UnityUI
             protected RectTransform content;
 
             /// <summary>
-            /// 获取或设置布局控制器
+            /// 获取或设置布局控制器。
             /// </summary>
             public LayoutBase Layout
             {
@@ -1826,12 +1826,12 @@ namespace EFramework.UnityUI
 
             #region 公开方法
             /// <summary>
-            /// 创建循环模块实例
+            /// 创建循环模块实例。
             /// </summary>
-            /// <param name="layout">布局控制器</param>
-            /// <param name="adapter">数据适配器</param>
-            /// <param name="viewport">视口RectTransform</param>
-            /// <param name="content">内容RectTransform</param>
+            /// <param name="layout">布局控制器。</param>
+            /// <param name="adapter">数据适配器。</param>
+            /// <param name="viewport">视口RectTransform。</param>
+            /// <param name="content">内容RectTransform。</param>
             public RecyleModule(LayoutBase layout, ICustomAdapter adapter, RectTransform viewport, RectTransform content)
             {
                 layout.Recyle = this;
@@ -1842,15 +1842,15 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 初始化循环模块
+            /// 初始化循环模块。
             /// </summary>
-            /// <param name="onInitialized">初始化完成回调</param>
-            /// <returns>协程迭代器</returns>
+            /// <param name="onInitialized">初始化完成回调。</param>
+            /// <returns>协程迭代器。</returns>
             public IEnumerator Setup(Action onInitialized)
             {
                 Inited = false;
                 Cleanup();
-                yield return null; // 等待一帧，保证获取到宽高
+                yield return null; // 等待一帧，保证获取到宽高。
 
                 if (Layout.Vertical)
                 {
@@ -1887,9 +1887,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 处理适配器变化事件
+            /// 处理适配器变化事件。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
+            /// <param name="wrapper">UIWrapContent实例。</param>
             public void OnAdapterChanged(UIWrapContent wrapper)
             {
                 if (!Inited || Layout == null) return;
@@ -1900,10 +1900,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 滚动到指定位置
+            /// 滚动到指定位置。
             /// </summary>
-            /// <param name="wrapper">UIWrapContent实例</param>
-            /// <param name="normalized">归一化位置值（0-1）</param>
+            /// <param name="wrapper">UIWrapContent实例。</param>
+            /// <param name="normalized">归一化位置值（0-1）。</param>
             public void ScrollTo(UIWrapContent wrapper, float normalized)
             {
                 if (!Inited || Layout == null) return;
@@ -1911,7 +1911,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 设置内容尺寸，根据布局计算内容在滑动方向上的长度
+            /// 设置内容尺寸，根据布局计算内容在滑动方向上的长度。
             /// </summary>
             protected void SetContentSize()
             {
@@ -1924,7 +1924,7 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 清理循环模块，销毁所有已创建的单元格
+            /// 清理循环模块，销毁所有已创建的单元格。
             /// </summary>
             protected void Cleanup()
             {
@@ -1936,10 +1936,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 获取单元格原型
+            /// 获取单元格原型。
             /// </summary>
-            /// <param name="index">单元格索引</param>
-            /// <returns>对应类型的单元格原型</returns>
+            /// <param name="index">单元格索引。</param>
+            /// <returns>对应类型的单元格原型。</returns>
             public CellZygote GetCellZygote(int index)
             {
                 var type = Adapter.GetCellType(index);
@@ -1952,10 +1952,10 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 从缓存池获取单元格
+            /// 从缓存池获取单元格。
             /// </summary>
-            /// <param name="index">单元格索引</param>
-            /// <returns>单元格信息</returns>
+            /// <param name="index">单元格索引。</param>
+            /// <returns>单元格信息。</returns>
             public CellInfo PopFromCachedPool(int index)
             {
                 var cell = CellInfo.Default;
@@ -1984,9 +1984,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 将单元格添加到已使用池
+            /// 将单元格添加到已使用池。
             /// </summary>
-            /// <param name="item">单元格项</param>
+            /// <param name="item">单元格项。</param>
             public void PushToUsedPool(CellItem item)
             {
                 var index = UsedPool.BinarySearch(item, this);
@@ -1994,9 +1994,9 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 将单元格从已使用池移动到缓存池
+            /// 将单元格从已使用池移动到缓存池。
             /// </summary>
-            /// <param name="item">单元格项</param>
+            /// <param name="item">单元格项。</param>
             public void MoveToCachedPool(CellItem item)
             {
                 UsedPool.Remove(item);
@@ -2004,18 +2004,18 @@ namespace EFramework.UnityUI
             }
 
             /// <summary>
-            /// 比较两个单元格项的索引
+            /// 比较两个单元格项的索引。
             /// </summary>
-            /// <param name="x">第一个单元格项</param>
-            /// <param name="y">第二个单元格项</param>
-            /// <returns>比较结果</returns>
+            /// <param name="x">第一个单元格项。</param>
+            /// <param name="y">第二个单元格项。</param>
+            /// <returns>比较结果。</returns>
             public int Compare(CellItem x, CellItem y) => x.Index.CompareTo(y.Index);
 
             /// <summary>
-            /// 创建单元格实例
+            /// 创建单元格实例。
             /// </summary>
-            /// <param name="zygote">单元格原型</param>
-            /// <returns>新创建的单元格信息</returns>
+            /// <param name="zygote">单元格原型。</param>
+            /// <returns>新创建的单元格信息。</returns>
             private CellInfo CreateCell(CellZygote zygote)
             {
                 var cellObj = Instantiate(zygote.Zygote.gameObject, Content, false);
@@ -2033,36 +2033,36 @@ namespace EFramework.UnityUI
 
             #region 保护成员、属性
             /// <summary>
-            /// 模块是否已初始化
+            /// 模块是否已初始化。
             /// </summary>
             protected bool Inited;
 
             /// <summary>
-            /// 已使用的单元格，此列表总是以索引从小到大排序
+            /// 已使用的单元格，此列表总是以索引从小到大排序。
             /// </summary>
             public readonly List<CellItem> UsedPool = new List<CellItem>();
 
             /// <summary>
-            /// 返回索引小端的单元格
+            /// 返回索引小端的单元格。
             /// </summary>
-            /// <returns>索引最小的单元格项</returns>
+            /// <returns>索引最小的单元格项。</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public CellItem LittleIndexFromUsedPool() => UsedPool.Count > 0 ? UsedPool[0] : CellItem.Default;
 
             /// <summary>
-            /// 返回索引大端的单元格
+            /// 返回索引大端的单元格。
             /// </summary>
-            /// <returns>索引最大的单元格项</returns>
+            /// <returns>索引最大的单元格项。</returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public CellItem BigIndexFromUsedPool() => UsedPool.Count > 0 ? UsedPool[UsedPool.Count - 1] : CellItem.Default;
 
             /// <summary>
-            /// 缓存池（未使用的单元格）
+            /// 缓存池（未使用的单元格）。
             /// </summary>
             internal readonly List<CellInfo> CachedPool = new List<CellInfo>();
 
             /// <summary>
-            /// 单元格原型（预制体）
+            /// 单元格原型（预制体）。
             /// </summary>
             internal readonly Dictionary<int, CellZygote> Zygotes = new Dictionary<int, CellZygote>();
             #endregion
@@ -2139,7 +2139,7 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 组件启动时初始化
+        /// 组件启动时初始化。
         /// </summary>
         protected override void Start()
         {
@@ -2203,9 +2203,9 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 遍历显示的子节点
+        /// 遍历显示的子节点。
         /// </summary>
-        /// <param name="handler">回调函数</param>
+        /// <param name="handler">回调函数。</param>
         public void EachItem(EachItemHandler handler)
         {
             if (!Inited) return;

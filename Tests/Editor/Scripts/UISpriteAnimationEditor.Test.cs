@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class TestUISpriteAnimationEditor
 {
     [Test]
-    public void CreateTemplate()
+    public void Create()
     {
         // 执行菜单操作创建Sprite Animation
         EditorApplication.ExecuteMenuItem("GameObject/UI/Sprite Animation");
@@ -31,7 +31,6 @@ public class TestUISpriteAnimationEditor
 
         // 清理
         if (createdObject != null) GameObject.DestroyImmediate(createdObject);
-
     }
 }
 #endif

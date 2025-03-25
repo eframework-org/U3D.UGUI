@@ -23,7 +23,7 @@ public class TestUISpriteAnimation
     }
 
     [TearDown]
-    public void TearDown()
+    public void Cleanup()
     {
         // 清理测试对象
         Object.DestroyImmediate(obj);

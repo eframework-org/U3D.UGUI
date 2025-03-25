@@ -112,7 +112,7 @@ namespace EFramework.UnityUI
         /// 快速索引组件。
         /// 通过路径查找目标节点并获取指定类型的组件。
         /// </summary>
-        /// <param name="rect">当前的RectTransform组件</param>
+        /// <param name="rect">当前的 RectTransform 组件</param>
         /// <param name="name">目标节点的名称或路径</param>
         /// <param name="type">要获取的组件类型，默认为null</param>
         /// <returns>找到的组件实例，如果未找到则返回null</returns>
@@ -123,27 +123,27 @@ namespace EFramework.UnityUI
         /// 通过路径查找目标节点并获取指定类型的组件。
         /// </summary>
         /// <typeparam name="T">要获取的组件类型</typeparam>
-        /// <param name="rect">当前的RectTransform组件</param>
+        /// <param name="rect">当前的 RectTransform 组件</param>
         /// <param name="name">目标节点的名称或路径</param>
         /// <returns>找到的类型为T的组件实例，如果未找到则返回null</returns>
         public static T Index<T>(this RectTransform rect, string name) where T : class { if (rect) return XComp.Index<T>(rect.gameObject, name); else return null; }
 
         /// <summary>
         /// 快速索引组件。
-        /// 通过路径在Canvas下查找目标节点并获取指定类型的组件。
+        /// 通过路径在 Canvas 下查找目标节点并获取指定类型的组件。
         /// </summary>
-        /// <param name="canvas">当前的Canvas组件</param>
-        /// <param name="name">目标节点的名称或路径</param>
-        /// <param name="type">要获取的组件类型，默认为null</param>
+        /// <param name="canvas">当前的 Canvas 组件。</param>
+        /// <param name="name">目标节点的名称或路径。</param>
+        /// <param name="type">要获取的组件类型，默认为null。</param>
         /// <returns>找到的组件实例，如果未找到则返回null</returns>
         public static object Index(this Canvas canvas, string name, System.Type type = null) { if (canvas) return XComp.Index(canvas.gameObject, name, type); else return null; }
 
         /// <summary>
         /// 快速索引组件的泛型版本。
-        /// 通过路径在Canvas下查找目标节点并获取指定类型的组件。
+        /// 通过路径在 Canvas 下查找目标节点并获取指定类型的组件。
         /// </summary>
         /// <typeparam name="T">要获取的组件类型</typeparam>
-        /// <param name="canvas">当前的Canvas组件</param>
+        /// <param name="canvas">当前的 Canvas 组件</param>
         /// <param name="name">目标节点的名称或路径</param>
         /// <returns>找到的类型为T的组件实例，如果未找到则返回null</returns>
         public static T Index<T>(this Canvas canvas, string name) where T : class { if (canvas) return XComp.Index<T>(canvas.gameObject, name); else return null; }
@@ -154,7 +154,7 @@ namespace EFramework.UnityUI
         /// </summary>
         /// <param name="rootObj">目标对象</param>
         /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明</param>
-        /// <returns>修改后的Graphic组件</returns>
+        /// <returns>修改后的 Graphic 组件</returns>
         public static Graphic SetGraphicAlpha(this Object rootObj, int alpha) { return SetGraphicAlpha(rootObj, null, alpha / 255f); }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace EFramework.UnityUI
         /// </summary>
         /// <param name="rootObj">目标对象</param>
         /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明</param>
-        /// <returns>修改后的Graphic组件</returns>
+        /// <returns>修改后的 Graphic 组件</returns>
         public static Graphic SetGraphicAlpha(this Object rootObj, float alpha) { return SetGraphicAlpha(rootObj, null, alpha); }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace EFramework.UnityUI
         /// <param name="parentObj">父对象</param>
         /// <param name="path">目标对象的路径，相对于父对象</param>
         /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明</param>
-        /// <returns>修改后的Graphic组件</returns>
+        /// <returns>修改后的 Graphic 组件</returns>
         public static Graphic SetGraphicAlpha(this Object parentObj, string path, int alpha) { return SetGraphicAlpha(parentObj, path, alpha / 255f); }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace EFramework.UnityUI
         /// <param name="parentObj">父对象</param>
         /// <param name="path">目标对象的路径，相对于父对象</param>
         /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明</param>
-        /// <returns>修改后的Graphic组件</returns>
+        /// <returns>修改后的 Graphic 组件</returns>
         public static Graphic SetGraphicAlpha(this Object parentObj, string path, float alpha)
         {
             var graphic = parentObj.GetComponent(path, typeof(Graphic)) as Graphic;
@@ -199,7 +199,7 @@ namespace EFramework.UnityUI
         /// </summary>
         /// <param name="rootObj">目标对象</param>
         /// <param name="func">点击事件回调函数，参数为被点击的游戏对象</param>
-        /// <returns>设置了事件的Button组件</returns>
+        /// <returns>设置了事件的 Button 组件</returns>
         public static Button SetButtonEvent(this Object rootObj, System.Action<GameObject> func) { return SetButtonEvent(rootObj, null, func); }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace EFramework.UnityUI
         /// <param name="parentObj">父对象</param>
         /// <param name="path">目标对象的路径，相对于父对象</param>
         /// <param name="func">点击事件回调函数，参数为被点击的游戏对象</param>
-        /// <returns>设置了事件的Button组件</returns>
+        /// <returns>设置了事件的 Button 组件</returns>
         public static Button SetButtonEvent(this Object parentObj, string path, System.Action<GameObject> func)
         {
             var listener = parentObj.GetComponent(path, typeof(Button)) as Button;
@@ -244,11 +244,11 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 设置文本内容。
-        /// 更新当前对象上Text组件的文本内容。
+        /// 更新当前对象上 Text 组件的文本内容。
         /// </summary>
         /// <param name="rootObj">目标对象</param>
         /// <param name="content">要设置的文本内容，将自动转换为字符串</param>
-        /// <returns>设置了内容的Text组件</returns>
+        /// <returns>设置了内容的 Text 组件</returns>
         public static Text SetLabelText(this Object rootObj, object content)
         {
             if (content == null) return null;
@@ -263,12 +263,12 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 设置文本内容。
-        /// 更新指定路径对象上Text组件的文本内容。
+        /// 更新指定路径对象上 Text 组件的文本内容。
         /// </summary>
         /// <param name="parentObj">父对象</param>
         /// <param name="path">目标对象的路径，相对于父对象</param>
         /// <param name="content">要设置的文本内容，将自动转换为字符串</param>
-        /// <returns>设置了内容的Text组件</returns>
+        /// <returns>设置了内容的 Text 组件</returns>
         public static Text SetLabelText(this Object parentObj, string path, object content)
         {
             if (content == null) return null;
@@ -282,12 +282,12 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 设置TextMeshPro文本内容。
-        /// 更新当前对象上TextMeshProUGUI组件的文本内容。
+        /// 设置 TextMeshPro 文本内容。
+        /// 更新当前对象上 TextMeshProUGUI 组件的文本内容。
         /// </summary>
-        /// <param name="rootObj">目标对象</param>
-        /// <param name="content">要设置的文本内容，将自动转换为字符串</param>
-        /// <returns>设置了内容的TextMeshProUGUI组件</returns>
+        /// <param name="rootObj">目标对象。</param>
+        /// <param name="content">要设置的文本内容，将自动转换为字符串。</param>
+        /// <returns>设置了内容的 TextMeshProUGUI 组件。</returns>
         public static TextMeshProUGUI SetMeshProText(this Object rootObj, object content)
         {
             if (content == null) return null;
@@ -301,13 +301,13 @@ namespace EFramework.UnityUI
         }
 
         /// <summary>
-        /// 设置TextMeshPro文本内容。
-        /// 更新指定路径对象上TextMeshProUGUI组件的文本内容。
+        /// 设置 TextMeshPro 文本内容。
+        /// 更新指定路径对象上 TextMeshProUGUI 组件的文本内容。
         /// </summary>
-        /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="content">要设置的文本内容，将自动转换为字符串</param>
-        /// <returns>设置了内容的TextMeshProUGUI组件</returns>
+        /// <param name="parentObj">父对象。</param>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="content">要设置的文本内容，将自动转换为字符串。</param>
+        /// <returns>设置了内容的 TextMeshProUGUI 组件。</returns>
         public static TextMeshProUGUI SetMeshProText(this Object parentObj, string path, object content)
         {
             if (content == null) return null;
@@ -322,13 +322,13 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 设置图片精灵。
-        /// 从指定图集中获取精灵并设置到指定路径对象的Image组件。
+        /// 从指定图集中获取精灵并设置到指定路径对象的 Image 组件。
         /// </summary>
-        /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="name">要设置的精灵名称</param>
-        /// <param name="atlas">精灵图集</param>
-        /// <returns>设置了精灵的Image组件</returns>
+        /// <param name="parentObj">父对象。</param>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="name">要设置的精灵名称。</param>
+        /// <param name="atlas">精灵图集。</param>
+        /// <returns>设置了精灵的 Image 组件。</returns>
         public static Image SetSpriteName(this Object parentObj, string path, string name, UIAtlas atlas)
         {
             var image = parentObj.GetComponent(path, typeof(Image)) as Image;
@@ -344,9 +344,9 @@ namespace EFramework.UnityUI
         /// 设置图片精灵的透明度。
         /// 使用0-255范围的整数值设置当前对象上Image组件的透明度。
         /// </summary>
-        /// <param name="rootObj">目标对象</param>
-        /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明</param>
-        /// <returns>修改后的Image组件</returns>
+        /// <param name="rootObj">目标对象。</param>
+        /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明。</param>
+        /// <returns>修改后的 Image 组件。</returns>
         public static Image SetSpriteAlpha(this Object rootObj, int alpha) { return SetSpriteAlpha(rootObj, null, (float)alpha / 255); }
 
         /// <summary>
@@ -354,28 +354,28 @@ namespace EFramework.UnityUI
         /// 使用0-255范围的整数值设置指定路径对象上Image组件的透明度。
         /// </summary>
         /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明</param>
-        /// <returns>修改后的Image组件</returns>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="alpha">透明度值，范围为0-255，其中0表示完全透明，255表示完全不透明。</param>
+        /// <returns>修改后的 Image 组件。</returns>
         public static Image SetSpriteAlpha(this Object parentObj, string path, int alpha) { return SetSpriteAlpha(parentObj, path, (float)alpha / 255); }
 
         /// <summary>
         /// 设置图片精灵的透明度。
-        /// 使用0-1范围的浮点值设置当前对象上Image组件的透明度。
+        /// 使用0-1范围的浮点值设置当前对象上 Image 组件的透明度。
         /// </summary>
-        /// <param name="rootObj">目标对象</param>
-        /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明</param>
-        /// <returns>修改后的Image组件</returns>
+        /// <param name="rootObj">目标对象。</param>
+        /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明。</param>
+        /// <returns>修改后的 Image 组件。</returns>
         public static Image SetSpriteAlpha(this Object rootObj, float alpha) { return SetSpriteAlpha(rootObj, null, alpha); }
 
         /// <summary>
         /// 设置图片精灵的透明度。
-        /// 使用0-1范围的浮点值设置指定路径对象上Image组件的透明度。
+        /// 使用0-1范围的浮点值设置指定路径对象上 Image 组件的透明度。
         /// </summary>
-        /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明</param>
-        /// <returns>修改后的Image组件</returns>
+        /// <param name="parentObj">父对象。</param>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="alpha">透明度值，范围为0-1，其中0表示完全透明，1表示完全不透明。</param>
+        /// <returns>修改后的 Image 组件。</returns>
         public static Image SetSpriteAlpha(this Object parentObj, string path, float alpha)
         {
             var image = parentObj.GetComponent(path, typeof(Image)) as Image;
@@ -389,21 +389,21 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 设置原始图片。
-        /// 从网络URL加载图片并设置到当前对象上的RawImage组件，默认使用缓存。
+        /// 从网络URL加载图片并设置到当前对象上的 RawImage 组件，默认使用缓存。
         /// </summary>
-        /// <param name="rootObj">目标对象</param>
-        /// <param name="url">图片的网络URL</param>
-        /// <returns>设置了图片的RawImage组件</returns>
+        /// <param name="rootObj">目标对象。</param>
+        /// <param name="url">图片的网络URL。</param>
+        /// <returns>设置了图片的 RawImage 组件。</returns>
         public static RawImage SetRawImage(this Object rootObj, string url) { return SetRawImage(rootObj, url, true); }
 
         /// <summary>
         /// 设置原始图片。
-        /// 从网络URL加载图片并设置到当前对象上的RawImage组件，可控制是否使用缓存。
+        /// 从网络URL加载图片并设置到当前对象上的 RawImage 组件，可控制是否使用缓存。
         /// </summary>
-        /// <param name="rootObj">目标对象</param>
-        /// <param name="url">图片的网络URL</param>
-        /// <param name="incache">是否使用缓存，true表示使用，false表示不使用</param>
-        /// <returns>设置了图片的RawImage组件</returns>
+        /// <param name="rootObj">目标对象。</param>
+        /// <param name="url">图片的网络URL。</param>
+        /// <param name="incache">是否使用缓存，true 表示使用，false 表示不使用。</param>
+        /// <returns>设置了图片的 RawImage 组件。</returns>
         public static RawImage SetRawImage(this Object rootObj, string url, bool incache)
         {
             var texture = rootObj.GetComponent(typeof(RawImage)) as RawImage;
@@ -427,23 +427,23 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 设置原始图片。
-        /// 从网络URL加载图片并设置到指定路径对象上的RawImage组件，默认使用缓存。
+        /// 从网络URL加载图片并设置到指定路径对象上的 RawImage 组件，默认使用缓存。
         /// </summary>
-        /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="url">图片的网络URL</param>
-        /// <returns>设置了图片的RawImage组件</returns>
+        /// <param name="parentObj">父对象。</param>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="url">图片的网络 URL。</param>
+        /// <returns>设置了图片的 RawImage 组件。</returns>
         public static RawImage SetRawImage(this Object parentObj, string path, string url) { return SetRawImage(parentObj, path, url, true); }
 
         /// <summary>
         /// 设置原始图片。
-        /// 从网络URL加载图片并设置到指定路径对象上的RawImage组件，可控制是否使用缓存。
+        /// 从网络 URL 加载图片并设置到指定路径对象上的 RawImage 组件，可控制是否使用缓存。
         /// </summary>
-        /// <param name="parentObj">父对象</param>
-        /// <param name="path">目标对象的路径，相对于父对象</param>
-        /// <param name="url">图片的网络URL</param>
-        /// <param name="incache">是否使用缓存，true表示使用，false表示不使用</param>
-        /// <returns>设置了图片的RawImage组件</returns>
+        /// <param name="parentObj">父对象。</param>
+        /// <param name="path">目标对象的路径，相对于父对象。</param>
+        /// <param name="url">图片的网络 URL。</param>
+        /// <param name="incache">是否使用缓存，true 表示使用，false 表示不使用。</param>
+        /// <returns>设置了图片的 RawImage 组件。</returns>
         public static RawImage SetRawImage(this Object parentObj, string path, string url, bool incache)
         {
             var texture = parentObj.GetComponent(path, typeof(RawImage)) as RawImage;
@@ -467,10 +467,10 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 获取已缓存的贴图。
-        /// 通过URL从缓存中获取之前加载过的贴图。
+        /// 通过 URL 从缓存中获取之前加载过的贴图。
         /// </summary>
-        /// <param name="url">贴图的网络URL</param>
-        /// <returns>缓存的贴图，如果未缓存则返回null</returns>
+        /// <param name="url">贴图的网络 URL。</param>
+        /// <returns>缓存的贴图，如果未缓存则返回 null。</returns>
         public static Texture2D GetTexture(string url)
         {
             Texture2D tex = null;
@@ -480,11 +480,11 @@ namespace EFramework.UnityUI
 
         /// <summary>
         /// 异步下载贴图。
-        /// 从网络URL加载贴图，并在加载完成后执行回调，可控制是否使用缓存。
+        /// 从网络 URL 加载贴图，并在加载完成后执行回调，可控制是否使用缓存。
         /// </summary>
-        /// <param name="url">贴图的网络URL</param>
-        /// <param name="incache">是否使用缓存，true表示使用，false表示不使用</param>
-        /// <param name="callback">加载完成后的回调函数</param>
+        /// <param name="url">贴图的网络 URL。</param>
+        /// <param name="incache">是否使用缓存，true 表示使用，false 表示不使用。</param>
+        /// <param name="callback">加载完成后的回调函数。</param>
         public static void WWWTexture(string url, bool incache, System.Action callback)
         {
             var done = false;

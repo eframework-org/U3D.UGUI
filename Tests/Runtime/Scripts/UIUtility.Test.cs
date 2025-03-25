@@ -35,7 +35,7 @@ public class TestUIUtility
     }
 
     [TearDown]
-    public void TearDown()
+    public void Reset()
     {
         // 清理测试对象
         Object.DestroyImmediate(rootObj);

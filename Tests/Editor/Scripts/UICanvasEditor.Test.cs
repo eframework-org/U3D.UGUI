@@ -7,10 +7,23 @@ using NUnit.Framework;
 using EFramework.UnityUI.Editor;
 using UnityEditor;
 using UnityEngine;
+using EFramework.Utility;
 
 public class TestUICanvasEditor
 {
-    const string TEST_PREFAB_PATH = "Assets/Temp/TestCanvas.prefab";
+    const string TestDir = "Assets/Temp/TestCanvasEditor";
+
+    [OneTimeSetUp]
+    public void Init()
+    {
+        if (!XFile.HasDirectory(TestDir)) XFile.CreateDirectory(TestDir);
+    }
+
+    [OneTimeTearDown]
+    public void Cleanup()
+    {
+        if (XFile.HasDirectory(TestDir)) XFile.DeleteDirectory(TestDir);
+    }
 
     [Test]
     public void OnInit()
@@ -29,7 +42,7 @@ public class TestUICanvasEditor
     }
 
     [Test]
-    public void PostProcessor()
+    public void OnPost()
     {
         // Arrange
         UICanvasEditor.OnInit();
@@ -39,15 +52,15 @@ public class TestUICanvasEditor
         try
         {
             // Assert
-            PrefabUtility.SaveAsPrefabAsset(canvasObj, TEST_PREFAB_PATH);
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TEST_PREFAB_PATH);
+            var prefabPath = XFile.PathJoin(TestDir, "TestCanvas.prefab");
+            PrefabUtility.SaveAsPrefabAsset(canvasObj, prefabPath);
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             var actualIcon = EditorGUIUtility.GetIconForObject(prefab);
             Assert.AreEqual(UICanvasEditor.icon, actualIcon, "图标设置应当正确");
         }
         finally
         {
             // Cleanup
-            AssetDatabase.DeleteAsset(TEST_PREFAB_PATH);
             GameObject.DestroyImmediate(canvasObj);
         }
     }
