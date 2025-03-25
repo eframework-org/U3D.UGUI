@@ -48,7 +48,7 @@ public class TestUIAtlasEditor
     {
         // Arrange
         UIAtlasEditor.icon = null;
-        var originCount = EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
+        var originCount = EditorApplication.projectWindowItemOnGUI == null ? 0 : EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
 
         // Act
         UIAtlasEditor.OnInit();

@@ -17,7 +17,7 @@ public class TestUICanvasEditor
     {
         // Arrange
         UICanvasEditor.icon = null;
-        var originCount = EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
+        var originCount = EditorApplication.projectWindowItemOnGUI == null ? 0 : EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
 
         // Act
         UICanvasEditor.OnInit();
