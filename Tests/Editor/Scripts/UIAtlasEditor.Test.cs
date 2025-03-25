@@ -16,31 +16,28 @@ using EFramework.Editor;
 
 public class TestUIAtlasEditor
 {
-    const string TEST_ATLAS_PATH = "Assets/Temp/TestAtlas/TestAtlas.prefab";
-    const string TEST_RAW_PATH = "Assets/Temp/RawPath";
-    public string rawAssetsDir;
+    const string TestDir = "Assets/Temp/TestUIAtlasEditor";
+    readonly string TestAtlas = XFile.PathJoin(TestDir, "TestAtlas.prefab");
+    readonly string TestRawPath = XFile.PathJoin(TestDir, "RawPath");
+    string TestRawAssets;
 
     [OneTimeSetUp]
-    public void OneTimeSetup()
+    public void Init()
     {
-        rawAssetsDir = XFile.PathJoin(XEditor.Utility.FindPackage().resolvedPath, "Tests/Runtime/RawAssets");
+        TestRawAssets = XFile.PathJoin(XEditor.Utility.FindPackage().resolvedPath, "Tests/Runtime/RawAssets");
     }
 
     [SetUp]
     public void Setup()
     {
-        if (!XFile.HasDirectory(TEST_RAW_PATH)) XFile.CreateDirectory(TEST_RAW_PATH);
-        var prefabDir = Path.GetDirectoryName(TEST_ATLAS_PATH);
-        if (!XFile.HasDirectory(prefabDir)) XFile.CreateDirectory(prefabDir);
-
+        if (!XFile.HasDirectory(TestRawPath)) XFile.CreateDirectory(TestRawPath);
+        if (!XFile.HasDirectory(TestDir)) XFile.CreateDirectory(TestDir);
     }
 
     [TearDown]
     public void Reset()
     {
-        string prefabDir = Path.GetFullPath(Path.GetDirectoryName(TEST_ATLAS_PATH));
-        if (XFile.HasDirectory(prefabDir)) XFile.DeleteDirectory(prefabDir);
-        if (XFile.HasDirectory(TEST_RAW_PATH)) XFile.DeleteDirectory(TEST_RAW_PATH);
+        if (XFile.HasDirectory(TestDir)) XFile.DeleteDirectory(TestDir);
     }
 
     [Test]
@@ -63,17 +60,17 @@ public class TestUIAtlasEditor
     public void Create()
     {
         LogAssert.ignoreFailingMessages = true;  // 忽略所有错误日志
-        var asset = UIAtlasEditor.Create(TEST_ATLAS_PATH, TEST_RAW_PATH);
+        var asset = UIAtlasEditor.Create(TestAtlas, TestRawPath);
         LogAssert.ignoreFailingMessages = false;    // 恢复正常行为
 
         // Assert
         Assert.IsNotNull(asset, "应该成功创建资产");
-        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TEST_ATLAS_PATH);
+        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
         Assert.IsNotNull(prefab, "预制体应该存在");
 
         var atlas = prefab.GetComponent<UIAtlas>();
         Assert.IsNotNull(atlas, "预制体应该包含UIAtlas组件");
-        Assert.AreEqual(TEST_RAW_PATH, atlas.RawPath, "RawPath应该被正确设置");
+        Assert.AreEqual(TestRawPath, atlas.RawPath, "RawPath应该被正确设置");
     }
 
     [Test]
@@ -93,18 +90,18 @@ public class TestUIAtlasEditor
         var atlas = go.AddComponent<UIAtlas>();
         // 设置不存在的RawPath
         atlas.RawPath = "Assets/NonExistentRawPath";
-        PrefabUtility.SaveAsPrefabAsset(go, TEST_ATLAS_PATH);   // 保存预制体会触发Import
+        PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
 
         // 测试导入成功
-        atlas.RawPath = rawAssetsDir;
+        atlas.RawPath = TestRawAssets;
         LogAssert.ignoreFailingMessages = true;
-        PrefabUtility.SaveAsPrefabAsset(go, TEST_ATLAS_PATH);   // 保存预制体会触发Import
+        PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
         LogAssert.ignoreFailingMessages = false;
         // 验证预制体是否包含精灵引用
-        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TEST_ATLAS_PATH);
+        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
         var prefaAtlas = prefab.GetComponent<UIAtlas>();
         Assert.IsNotNull(prefaAtlas, "预制体应该包含UIAtlas组件");
-        var atlasDir = Path.GetDirectoryName(TEST_ATLAS_PATH);
+        var atlasDir = Path.GetDirectoryName(TestAtlas);
         Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png应当被生成");
     }
 
@@ -116,7 +113,7 @@ public class TestUIAtlasEditor
         Assert.IsNull(result, "不存在的文件应返回null");
 
         // 测试正常文件
-        result = UIAtlasEditor.Parse(XFile.PathJoin(rawAssetsDir, "TestAtlas.tpsheet"));
+        result = UIAtlasEditor.Parse(XFile.PathJoin(TestRawAssets, "TestAtlas.tpsheet"));
         Assert.IsNotNull(result, "存在的文件应返回非null");
         Assert.AreEqual(result.MetaData.Length, 1, "应当包含1个精灵");
         Assert.AreEqual(result.MetaData[0].name, "Square", "应当包含Square");
