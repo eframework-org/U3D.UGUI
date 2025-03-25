@@ -422,7 +422,7 @@ public class Test<模块名称>
 ## 开发流程
 
 ### 1. 环境准备
-- 克隆解决方案仓库：`git clone https://github.com/eframework-org/EF.U3D.git`
+- 克隆解决方案仓库：`git clone https://github.com/eframework-org/U3D.git`
 - 使用 `Cursor` 或 `VS Code` 编辑器打开解决方案
 
 ### 2. 开发调试
