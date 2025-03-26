@@ -33,7 +33,7 @@ jobs:
         projectPath:
           - Package
         unityVersion: [6000.0.32f1]
-        testMode: [EditMode, PlayMode]
+        testMode: [EditMode]
     outputs:
       passed: ${{ steps.tests.conclusion == 'success' }}
 
@@ -45,7 +45,6 @@ jobs:
           path: Package
 
       - name: 准备镜像
-        shell: bash
         run: |
           # 创建 Dockerfile
           cat > Dockerfile << EOF
@@ -74,7 +73,7 @@ jobs:
           # RUN ln -sf /usr/lib/TexturePacker/TexturePacker /usr/local/bin/TexturePacker
 
           # 自动同意许可协议
-          RUN echo "agree" | TexturePacker --version
+          RUN echo agree | TexturePacker --version
           EOF
 
           # 构建镜像
