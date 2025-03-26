@@ -70,7 +70,7 @@ jobs:
               && rm TexturePacker-7.6.0.deb
 
           #同意 TexturePacker 许可协议
-          RUN yes | TexturePacker --version
+          RUN yes agree | TexturePacker --version
           EOF
 
           # 构建镜像
