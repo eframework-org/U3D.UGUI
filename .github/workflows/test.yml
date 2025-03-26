@@ -72,8 +72,8 @@ jobs:
           # 配置 TexturePacker 环境变量
           # RUN ln -sf /usr/lib/TexturePacker/TexturePacker /usr/local/bin/TexturePacker
 
-          # 自动同意许可协议
-          RUN echo agree | TexturePacker --version
+          # 同意 TexturePacker 许可协议
+          RUN bash -c 'echo "agree" | TexturePacker --version'
           EOF
 
           # 构建镜像
