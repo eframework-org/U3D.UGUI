@@ -107,7 +107,7 @@ jobs:
           packageMode: true
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          scopedRegistryUrl: https://registry.npmjs.org/
+          scopedRegistryUrl: https://registry.npmjs.com/
           registryScopes: 'org.eframework'
           testMode: ${{ matrix.testMode }}
           artifactsPath: Results
