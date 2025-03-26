@@ -1,7 +1,7 @@
 {
   "name": "org.eframework.u3d.ugui",
-  "displayName": "EFramework UnityUI",
-  "description": "U3D.UGUI 是基于 Unity UI 的一个拓展模块，提供了丰富的组件扩展和工具集，例如 TexturePacker 图集打包和循环列表视图等，能够有效简化 UI 开发流程。",
+  "displayName": "EFramework UnityUI Plugins",
+  "description": "EFramework UnityUI Plugins 是基于 Unity UI 的一个拓展插件，提供了丰富的组件扩展和工具集，例如 TexturePacker 图集打包和循环列表视图等，能够有效简化 UI 开发流程。",
   "version": "0.0.1",
   "unity": "2021.3",
   "license": "MIT",
