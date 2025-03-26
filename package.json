@@ -26,8 +26,8 @@
   "dependencies": {
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ugui": "2.0.0",
-    "org.eframework.u3d.util": "0.0.1",
-    "org.eframework.u3d.edit": "0.0.1"
+    "org.eframework.u3d.util": "0.0.2",
+    "org.eframework.u3d.edit": "0.0.2"
   },
   "puerExports": [
     "UnityEngine.UI",
