@@ -45,6 +45,7 @@ jobs:
           path: Package
 
       - name: 准备镜像
+        shell: bash
         run: |
           # 创建 Dockerfile
           cat > Dockerfile << EOF
