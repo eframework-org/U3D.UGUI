@@ -175,7 +175,7 @@ namespace EFramework.UnityUI.Editor
             {
                 var task = XEditor.Cmd.Run(
                                 bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin", "/Applications/TexturePacker.app/Contents/MacOS"),
-                                args: new string[] { arg, $"--sheet \"{rawAtlasTex}\" --data \"{rawAtlasSheet}\" \"{atlas.RawPath}\"" });
+                                args: new string[] { arg, $"--sheet \"{ rawAtlasTex }\" --data \"{ rawAtlasSheet }\" \"{ atlas.RawPath }\"" });
                 task.Wait();
 
                 if (task.Result.Code == 0 && XFile.HasFile(rawAtlasTex) && XFile.HasFile(rawAtlasSheet))

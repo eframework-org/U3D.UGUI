@@ -33,7 +33,7 @@ jobs:
         projectPath:
           - Package
         unityVersion: [6000.0.32f1]
-        testMode: [EditMode]
+        testMode: [EditMode, PlayMode]
     outputs:
       passed: ${{ steps.tests.conclusion == 'success' }}
 
