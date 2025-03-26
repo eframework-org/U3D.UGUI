@@ -12,7 +12,16 @@ UIAtlas 是一个用于管理 Sprite 资源的组件，提供了 TexturePacker �
 
 ## 使用手册
 
-### 1. 创建图集
+### 1. 前置条件
+
+使用图集打包功能需要安装以下依赖：
+
+1. 下载安装 [TexturePacker](https://www.codeandweb.com/texturepacker) 软件并**同意**许可协议
+2. Docker 环境使用可参考 TexturePacker 的[ CI 教程](https://www.codeandweb.com/texturepacker/documentation/docker-ci)
+3. Linux 环境需要安装 `apt-get install -y libgdiplus` 库
+4. macOS 环境需要安装 `brew install mono-libgdiplus` 库
+
+### 2. 创建图集
 
 通过编辑器创建图集：
 
@@ -21,14 +30,14 @@ UIAtlas 是一个用于管理 Sprite 资源的组件，提供了 TexturePacker �
 3. 选择包含精灵图片的素材目录
 4. 编辑器将自动创建 `UIAtlas` 预制体
 
-### 2. 资源导入
+### 3. 资源导入
 
 支持自动和手动两种方式导入图集：
 
 1. 监听资源导入事件触发自动化导入流程
 2. 右键 `UIAtlas` 资源并 `Reimport`
 
-### 3. 图集使用
+### 4. 图集使用
 
 ```csharp
 // 获取图集组件

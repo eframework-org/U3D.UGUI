@@ -16,15 +16,6 @@ U3D.UGUI 是基于 Unity UI 的一个拓展模块，提供了丰富的组件扩�
 - [UIUtility](Documentation~/UIUtility.md) 是一个 Unity UI 的工具函数集，提供了一系列简化 UI 组件操作的扩展方法，包含组件查找、属性设置、事件处理等功能
 - [UIWrapContent](Documentation~/UIWrapContent.md) 是一个拓展自 ScrollRect 的循环列表视图组件，提供了高效的大数据列表和网格显示能力，通过元素复用降低内存占用
 
-## 使用手册
-
-### 1. 前置条件
-
-1. 下载安装 [TexturePacker](https://www.codeandweb.com/texturepacker) 软件并同意许可协议
-2. Docker 环境使用可参考 TexturePacker 的[ CI 教程](https://www.codeandweb.com/texturepacker/documentation/docker-ci)
-3. Linux 环境需要安装 `apt-get install -y libgdiplus` 库
-4. macOS 环境需要安装 `brew install mono-libgdiplus` 库
-
 ## 常见问题
 
 更多问题，请查阅[问题反馈](CONTRIBUTING.md#问题反馈)。
