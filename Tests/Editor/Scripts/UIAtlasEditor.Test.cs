@@ -76,6 +76,15 @@ public class TestUIAtlasEditor
     [Test]
     public void Import()
     {
+        var task = XEditor.Cmd.Run(
+                               bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin"),
+                               args: new string[] { "--version" });
+        task.Wait();
+        Assert.IsTrue(task.Result.Code == 0, "TexturePacker应当安装成功");
+        Assert.IsTrue(XFile.HasDirectory(TestRawAssets), "TestRawAssets应当存在");
+        Assert.IsTrue(XFile.HasFile(XFile.PathJoin(TestRawAssets, "Square.png")), "Square.png应当存在");
+
+
         // 测试导入不存在的图集
         LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: null atlas at: .*"));
         // 使用一个不存在的路径
