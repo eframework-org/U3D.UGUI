@@ -52,6 +52,8 @@ jobs:
           # 同意 TexturePacker 许可协议
           yes agree | TexturePacker --version
 
+          echo "TexturePacker: $(TexturePacker --version)"
+
           # 继续执行传入的命令
           exec "$@"
           EOF
