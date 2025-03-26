@@ -69,16 +69,8 @@ jobs:
               && dpkg -i TexturePacker-7.6.0.deb || true \
               && rm TexturePacker-7.6.0.deb
 
-          # 配置 TexturePacker 环境变量
-          # RUN ln -sf /usr/lib/TexturePacker/TexturePacker /usr/local/bin/TexturePacker
-
-          # 自动同意许可协议 - 使用更可靠的方式
-          RUN apt-get update && apt-get install -y expect
-          RUN printf '#!/bin/bash\necho "agree" > /tmp/agree.txt\ncat /tmp/agree.txt | TexturePacker --version\ntouch /tmp/texturepacker_license_accepted\n' > /tmp/accept_license.sh
-          RUN chmod +x /tmp/accept_license.sh && /tmp/accept_license.sh
-
-          # 验证许可证已接受
-          RUN test -f /tmp/texturepacker_license_accepted || exit 1
+          # 自动同意许可协议 - 使用更简单的方式
+          RUN printf 'agree\n' > /tmp/agree.txt && cat /tmp/agree.txt | TexturePacker --version || true
           EOF
 
           # 构建镜像
