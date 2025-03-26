@@ -46,6 +46,17 @@ jobs:
 
       - name: 准备镜像
         run: |
+          # 创建启动脚本
+          cat > entrypoint.sh << 'EOF'
+          #!/bin/bash
+          # 同意 TexturePacker 许可协议
+          yes agree | TexturePacker --version
+
+          # 继续执行传入的命令
+          exec "$@"
+          EOF
+          chmod +x entrypoint.sh
+
           # 创建 Dockerfile
           cat > Dockerfile << EOF
           FROM unityci/editor:ubuntu-${{ matrix.unityVersion }}-linux-il2cpp-3
@@ -69,8 +80,12 @@ jobs:
               && dpkg -i TexturePacker-7.6.0.deb || true \
               && rm TexturePacker-7.6.0.deb
 
-          #同意 TexturePacker 许可协议
-          RUN yes agree | TexturePacker --version
+          # 复制启动脚本
+          COPY entrypoint.sh /usr/local/bin/
+          RUN chmod +x /usr/local/bin/entrypoint.sh
+
+          # 设置镜像入口
+          ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
           EOF
 
           # 构建镜像
