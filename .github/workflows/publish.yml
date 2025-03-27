@@ -31,9 +31,9 @@ jobs:
           exit 1
 
       - name: 检出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          lfs: true
 
       - name: 获取版本号
         id: get_version
@@ -91,12 +91,14 @@ jobs:
       
     steps:
       - name: 检出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: 设置 Node.js 环境
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.com'
 
       - name: 更新版本号

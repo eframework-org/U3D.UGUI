@@ -82,11 +82,11 @@
 │   ├── <Module2>.md                       # 模块2文档
 │   └── ...
 │
-├── package.json                           # 项目描述
+├── README.md                              # 项目文档
 ├── CHANGELOG.md                           # 更新记录
 ├── CONTRIBUTING.md                        # 贡献指南
-├── LICENSE                                # 开源协议
-└── .gitignore                             # Git忽略
+├── LICENSE.md                             # 开源协议
+└── package.json                           # 项目描述
 ```
 
 ### 2. 命名规范
