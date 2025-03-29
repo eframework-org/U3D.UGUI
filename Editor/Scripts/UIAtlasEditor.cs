@@ -166,8 +166,8 @@ namespace EFramework.UnityUI.Editor
             var rawAtlasSheet = XFile.PathJoin(Path.GetDirectoryName(atlas.RawPath), atlasName + ".tpsheet");
 
             var argFile = XFile.PathJoin(Path.GetDirectoryName(atlas.RawPath), atlasName + ".arg");
-            var arg = "--format unity-texture2d --force-publish --disable-auto-alias --disable-rotation --force-squared --extrude 1";
-            if (XFile.HasFile(argFile)) arg = File.ReadAllText(argFile);
+            var arg = "--format unity-texture2d --force-publish --trim --disable-auto-alias --disable-rotation --force-squared --extrude 1";
+            if (XFile.HasFile(argFile)) arg = XFile.OpenText(argFile);
 
             var success = false;
 
@@ -175,7 +175,7 @@ namespace EFramework.UnityUI.Editor
             {
                 var task = XEditor.Cmd.Run(
                                 bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin", "/Applications/TexturePacker.app/Contents/MacOS"),
-                                args: new string[] { arg, $"--sheet \"{ rawAtlasTex }\" --data \"{ rawAtlasSheet }\" \"{ atlas.RawPath }\"" });
+                                args: new string[] { arg, $"--sheet \"{rawAtlasTex}\" --data \"{rawAtlasSheet}\" \"{atlas.RawPath}\"" });
                 task.Wait();
 
                 if (task.Result.Code == 0 && XFile.HasFile(rawAtlasTex) && XFile.HasFile(rawAtlasSheet))
@@ -184,7 +184,7 @@ namespace EFramework.UnityUI.Editor
                     if (sheetDesc == null) XLog.Error("UIAtlasEditor.Import: parse sheet info failed: {0}", rawAtlasSheet);
                     else
                     {
-                        Draw(sheetDesc, atlas.RawPath, rawAtlasTex, !arg.Contains("--trim-mode None"));
+                        Draw(sheetDesc, atlas.RawPath, rawAtlasTex, arg.Contains("--trim") && !arg.Contains("--trim-mode None"));
 
                         var atlasDst = XFile.NormalizePath(Path.GetFullPath(Path.GetDirectoryName(path)));
                         var atlasTex = XFile.PathJoin(atlasDst, atlasName + ".png");
