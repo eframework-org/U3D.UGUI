@@ -3,17 +3,17 @@ name: 版本发布
 on:
   workflow_dispatch:
     inputs:
-      confirm:
-        description: '请输入仓库名 (owner/repo) 以确认发布'
-        required: true
       version:
-        description: '请输入版本号（如：1.0.0，无需v前缀，默认递增）'
+        description: '发布版本（如：1.0.0，默认递增）'
         required: false
-      skip_tests:
-        description: '跳过单元测试'
+      skip_test:
+        description: '忽略测试'
         type: boolean
         default: false
         required: false
+      confirm:
+        description: '请输入仓库名称（owner/repo）以确认发布'
+        required: true
 
 jobs:
   prepare:
@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+          fetch-depth: 0
 
       - name: 获取版本号
         id: get_version
@@ -67,7 +68,7 @@ jobs:
   test:
     name: 运行单元测试
     needs: prepare
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    if: ${{ github.event.inputs.skip_test != 'true' }}
     permissions:
       checks: write
       contents: read

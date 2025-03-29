@@ -2,11 +2,33 @@ name: 单元测试
 
 on:
   workflow_dispatch:
+    inputs:
+      unity_versions:
+        description: '引擎版本：https://unity.com/releases/editor/archive'
+        required: false
+        type: string
+        default: '["2021.3.30f1", "2022.3.60f1", "6000.0.32f1"]'
+      test_modes:
+        description: '测试模式：EditMode/PlayMode'
+        required: false
+        type: string
+        default: '["PlayMode"]'
   workflow_call:
     outputs:
       test_passed:
         description: "测试是否通过"
         value: ${{ jobs.test.outputs.passed }}
+    inputs:
+      unity_versions:
+        description: '引擎版本：https://unity.com/releases/editor/archive'
+        required: false
+        type: string
+        default: '["2021.3.30f1", "2022.3.60f1", "6000.0.32f1"]'
+      test_modes:
+        description: '测试模式：EditMode/PlayMode'
+        required: false
+        type: string
+        default: '["EditMode", "PlayMode"]' 
     secrets:
       UNITY_LICENSE:
         required: true
@@ -23,7 +45,7 @@ permissions:
 
 jobs:
   test:
-    name: 测试 ${{ matrix.testMode }} 环境
+    name: 测试 ${{ matrix.unityVersion }}.${{ matrix.testMode }} 环境
     runs-on: ubuntu-latest
     env:
       TZ: 'Asia/Shanghai'
@@ -32,8 +54,8 @@ jobs:
       matrix:
         projectPath:
           - Package
-        unityVersion: [6000.0.32f1]
-        testMode: [EditMode, PlayMode]
+        unityVersion: ${{ fromJson(github.event.inputs.unity_versions || inputs.unity_versions) }}
+        testMode: ${{ fromJson(github.event.inputs.test_modes || inputs.test_modes) }}
     outputs:
       passed: ${{ steps.tests.conclusion == 'success' }}
 
@@ -112,13 +134,12 @@ jobs:
           testMode: ${{ matrix.testMode }}
           artifactsPath: Results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: 测试 ${{ matrix.testMode }} 报告
-          customImage: unity-editor-ubuntu-linux-il2cpp-3:${{ matrix.unityVersion }}
+          checkName: 测试 ${{ matrix.unityVersion }}.${{ matrix.testMode }} 报告
 
       - name: 上传报告
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Test.${{ matrix.testMode }}.Reports
+          name: Test#${{ github.run_number }}.${{ matrix.unityVersion }}.${{ matrix.testMode }}.Reports
           path: ${{ steps.tests.outputs.artifactsPath }}
           retention-days: 14
