@@ -12,7 +12,7 @@ on:
         description: '测试模式：EditMode/PlayMode'
         required: false
         type: string
-        default: '["PlayMode"]'
+        default: '["EditMode", "PlayMode"]'
   workflow_call:
     outputs:
       test_passed:
