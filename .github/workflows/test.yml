@@ -14,10 +14,13 @@ on:
         type: string
         default: '["EditMode", "PlayMode"]'
   workflow_call:
-    outputs:
-      test_passed:
-        description: "测试是否通过"
-        value: ${{ jobs.test.outputs.passed }}
+    secrets:
+      UNITY_LICENSE:
+        required: true
+      UNITY_EMAIL:
+        required: true
+      UNITY_PASSWORD:
+        required: true
     inputs:
       unity_versions:
         description: '引擎版本：https://unity.com/releases/editor/archive'
@@ -28,14 +31,11 @@ on:
         description: '测试模式：EditMode/PlayMode'
         required: false
         type: string
-        default: '["EditMode", "PlayMode"]' 
-    secrets:
-      UNITY_LICENSE:
-        required: true
-      UNITY_EMAIL:
-        required: true
-      UNITY_PASSWORD:
-        required: true
+        default: '["EditMode", "PlayMode"]'
+    outputs:
+      test_passed:
+        description: "测试是否通过"
+        value: ${{ jobs.test.outputs.passed }}
 
 permissions:
   checks: write
@@ -45,7 +45,7 @@ permissions:
 
 jobs:
   test:
-    name: 测试 ${{ matrix.unityVersion }}.${{ matrix.testMode }} 环境
+    name: 测试 Unity${{ matrix.unityVersion }}.${{ matrix.testMode }} 环境
     runs-on: ubuntu-latest
     env:
       TZ: 'Asia/Shanghai'
@@ -134,12 +134,12 @@ jobs:
           testMode: ${{ matrix.testMode }}
           artifactsPath: Results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: 测试 ${{ matrix.unityVersion }}.${{ matrix.testMode }} 报告
+          checkName: 测试 Unity${{ matrix.unityVersion }}.${{ matrix.testMode }} 报告
 
       - name: 上传报告
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Test#${{ github.run_number }}.${{ matrix.unityVersion }}.${{ matrix.testMode }}.Reports
+          name: Test#${{ github.run_number }}.Unity${{ matrix.unityVersion }}.${{ matrix.testMode }}.Reports
           path: ${{ steps.tests.outputs.artifactsPath }}
           retention-days: 14
