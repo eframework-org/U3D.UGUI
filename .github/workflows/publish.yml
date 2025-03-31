@@ -119,14 +119,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
         run: npm publish --access public
       
-      - name: 预热注册表
-        run: |
-          echo "🔄 请求注册表预热..."
-          PACKAGE_NAME=$(node -p "require('./package.json').name")
-          VERSION="${{ needs.prepare.outputs.next_version }}"
-          curl -X GET "https://registry.npmmirror.com/$PACKAGE_NAME?sync_upstream=true" || true
-          echo "📦 注册表将在稍后同步: https://registry.npmmirror.com/package/$PACKAGE_NAME"
-
       - name: 提交版本标签
         shell: bash
         env:
