@@ -146,7 +146,6 @@ jobs:
           
       - name: 发布完成
         run: |
-          echo "✅ 发布完成"
           echo "版本: v${{ needs.prepare.outputs.next_version }}"
           echo "标签: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.prepare.outputs.next_version }}"
           echo "注册表: https://www.npmjs.com/package/$(node -p "require('./package.json').name")"
