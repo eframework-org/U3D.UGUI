@@ -135,6 +135,7 @@ jobs:
           artifactsPath: Results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: 测试 Unity${{ matrix.unityVersion }}.${{ matrix.testMode }} 报告
+          customImage: unity-editor-ubuntu-linux-il2cpp-3:${{ matrix.unityVersion }}
 
       - name: 上传报告
         uses: actions/upload-artifact@v4
