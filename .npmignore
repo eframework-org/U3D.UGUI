@@ -3,3 +3,4 @@
 .gitignore*
 .gitattributes*
 Tests/
+Tests.meta
