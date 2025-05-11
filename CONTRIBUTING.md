@@ -133,7 +133,8 @@
 # <项目名称>
 
 [![Version](https://img.shields.io/npm/v/<项目包名>)](https://www.npmjs.com/package/<项目包名>)
-[![Downloads](https://img.shields.io/npm/dm/<项目包名>)](https://www.npmjs.com/package/<项目包名>)  
+[![Downloads](https://img.shields.io/npm/dm/<项目包名>)](https://www.npmjs.com/package/<项目包名>)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Explore-blue)](https://deepwiki.com/<项目包名>)
 
 <项目名称> 提供了/是一个/实现了 <核心功能>，支持/用于 <主要特性>。
 
@@ -166,7 +167,8 @@
 # <模块名称>
 
 [![Version](https://img.shields.io/npm/v/<项目包名>)](https://www.npmjs.com/package/<项目包名>)
-[![Downloads](https://img.shields.io/npm/dm/<项目包名>)](https://www.npmjs.com/package/<项目包名>)  
+[![Downloads](https://img.shields.io/npm/dm/<项目包名>)](https://www.npmjs.com/package/<项目包名>)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Explore-blue)](https://deepwiki.com/<项目包名>)
 
 <模块名称> 提供了/是一个/实现了 <核心功能>，支持/用于 <主要特性>。
 
