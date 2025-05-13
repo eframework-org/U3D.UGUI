@@ -7,7 +7,7 @@ on:
         description: 'Unity 版本：https://unity.com/releases/editor/archive'
         required: false
         type: string
-        default: '["2021.3.30f1", "2022.3.60f1", "6000.0.32f1"]'
+        default: '["2021.3.30f1", "2022.3.60f1", "6000.1.2f1"]'
       test_modes:
         description: '测试模式：EditMode/PlayMode'
         required: false
@@ -26,7 +26,7 @@ on:
         description: 'Unity 版本：https://unity.com/releases/editor/archive'
         required: false
         type: string
-        default: '["2021.3.30f1", "2022.3.60f1", "6000.0.32f1"]'
+        default: '["2021.3.30f1", "2022.3.60f1", "6000.1.2f1"]'
       test_modes:
         description: '测试模式：EditMode/PlayMode'
         required: false
