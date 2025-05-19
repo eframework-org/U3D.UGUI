@@ -25,4 +25,4 @@ EFramework UnityUI Plugins 是基于 Unity UI 的一个拓展插件，提供了�
 
 - [更新记录](CHANGELOG.md)
 - [贡献指南](CONTRIBUTING.md)
-- [许可证](LICENSE.md) 
+- [许可证](LICENSE.md)
