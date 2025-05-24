@@ -3,7 +3,7 @@ name: 版本发布
 on:
   workflow_dispatch:
     inputs:
-      version:
+      new_version:
         description: '发布版本（如：1.0.0，默认递增）'
         required: false
       skip_test:
@@ -22,7 +22,9 @@ jobs:
     env:
       TZ: 'Asia/Shanghai'
     outputs:
-      next_version: ${{ steps.get_version.outputs.version }}
+      new_version: ${{ steps.get_version.outputs.new_version }}
+      release_title: ${{ steps.parse_changelog.outputs.release_title }}
+      release_content: ${{ steps.parse_changelog.outputs.release_content }}
     steps:
       - name: 验证仓库名称
         if: github.event.inputs.confirm != github.repository
@@ -30,17 +32,17 @@ jobs:
           echo "仓库名称不匹配，输入: ${{ github.event.inputs.confirm }}，期望: ${{ github.repository }}"
           exit 1
 
-      - name: 检出代码
+      - name: 检出仓库代码
         uses: actions/checkout@v4
         with:
           lfs: true
           fetch-depth: 0
 
-      - name: 获取版本号
+      - name: 获取更新版本
         id: get_version
         run: |
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [ -n "${{ github.event.inputs.new_version }}" ]; then
+            VERSION="${{ github.event.inputs.new_version }}"
           else
             # 获取最新tag版本号并加1
             LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
@@ -62,8 +64,59 @@ jobs:
             exit 1
           fi
           
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "new_version=$VERSION" >> $GITHUB_OUTPUT
           echo "将发布版本：v$VERSION"
+
+      - name: 获取更新日志
+        id: parse_changelog
+        run: |
+          VERSION="${{ steps.get_version.outputs.new_version }}"
+          CHANGELOG_FILE="CHANGELOG.md"
+          
+          # 检查 CHANGELOG.md 是否存在
+          if [ ! -f "$CHANGELOG_FILE" ]; then
+            echo "错误：$CHANGELOG_FILE 文件不存在"
+            exit 1
+          fi
+          
+          # 提取标题
+          TITLE_LINE=$(grep -n "## \[$VERSION\]" "$CHANGELOG_FILE" | cut -d ":" -f 1)
+          if [ -z "$TITLE_LINE" ]; then
+            echo "错误：在 $CHANGELOG_FILE 中未找到版本 [$VERSION] 的更新记录" 
+            exit 1 
+          fi
+          RELEASE_TITLE=$(sed -n "${TITLE_LINE}p" "$CHANGELOG_FILE" | sed 's/^##\s*//g' | sed 's/^\s*//;s/\s*$//')
+          echo "版本标题：$RELEASE_TITLE"
+          
+          # 计算内容的起始行和结束行
+          START_LINE=$((TITLE_LINE + 1))
+          END_LINE=$(grep -n "^## " "$CHANGELOG_FILE" | cut -d ":" -f 1 | awk -v start="$START_LINE" '$1 > start' | head -1)
+          
+          # 如果没有找到下一个版本标题，则使用文件末尾
+          if [ -z "$END_LINE" ]; then
+              END_LINE=$(wc -l < "$CHANGELOG_FILE")
+              CONTENT_END_LINE=$END_LINE
+          else
+              # 如果找到了下一个版本标题，则内容结束行为下一个版本标题的前一行
+              CONTENT_END_LINE=$((END_LINE - 1))
+          fi
+
+          # 提取内容
+          RELEASE_CONTENT=$(sed -n "${START_LINE},${CONTENT_END_LINE}p" "$CHANGELOG_FILE" | grep -v "^$")
+          
+          # 检查提取的内容是否为空
+          if [ -z "$RELEASE_CONTENT" ]; then
+            echo "错误：更新记录内容为空，请检查 $CHANGELOG_FILE 格式"
+            exit 1
+          fi
+          echo "版本内容："
+          echo "$RELEASE_CONTENT"
+          
+          # 输出变量
+          echo "release_title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
+          echo "release_content<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELEASE_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
   test:
     name: 运行单元测试
@@ -91,7 +144,7 @@ jobs:
       contents: write
       
     steps:
-      - name: 检出代码
+      - name: 检出仓库代码
         uses: actions/checkout@v4
         with:
           lfs: true
@@ -104,7 +157,7 @@ jobs:
 
       - name: 更新版本号
         run: |
-          VERSION="${{ needs.prepare.outputs.next_version }}"
+          VERSION="${{ needs.prepare.outputs.new_version }}"
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           
           if [ "$VERSION" != "$CURRENT_VERSION" ]; then
@@ -118,13 +171,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
         run: npm publish --access public
-      
+
       - name: 提交版本标签
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{ needs.prepare.outputs.next_version }}"
+          VERSION="${{ needs.prepare.outputs.new_version }}"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
@@ -143,9 +196,20 @@ jobs:
 
           # 推送版本
           git push origin --follow-tags
-          
-      - name: 发布完成
+
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.prepare.outputs.new_version }}
+          name: ${{ needs.prepare.outputs.release_title }}
+          body: ${{ needs.prepare.outputs.release_content }}
+          draft: false
+          prerelease: false
+
+      - name: 版本发布完成
         run: |
-          echo "版本: v${{ needs.prepare.outputs.next_version }}"
-          echo "标签: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.prepare.outputs.next_version }}"
+          echo "版本: v${{ needs.prepare.outputs.new_version }}"
+          echo "标签: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.prepare.outputs.new_version }}"
           echo "注册表: https://www.npmjs.com/package/$(node -p "require('./package.json').name")"
