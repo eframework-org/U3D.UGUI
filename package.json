@@ -29,7 +29,7 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.textmeshpro": "3.0.6",
     "org.eframework.u3d.util": "0.0.6",
-    "org.eframework.u3d.edit": "0.0.6"
+    "org.eframework.u3d.edit": "0.0.7"
   },
   "puerExports": [
     "UnityEngine.UI",
