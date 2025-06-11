@@ -28,8 +28,8 @@
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ugui": "1.0.0",
     "com.unity.textmeshpro": "3.0.6",
-    "org.eframework.u3d.util": "0.0.8",
-    "org.eframework.u3d.edit": "0.0.9"
+    "org.eframework.u3d.util": "0.0.9",
+    "org.eframework.u3d.edit": "0.1.1"
   },
   "puerExports": [
     "UnityEngine.UI",
