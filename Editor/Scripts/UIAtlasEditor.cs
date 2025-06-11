@@ -226,7 +226,7 @@ namespace EFramework.UnityUI.Editor
             if (XFile.HasFile(rawAtlasTex)) XFile.DeleteFile(rawAtlasTex);
             if (XFile.HasFile(rawAtlasSheet)) XFile.DeleteFile(rawAtlasSheet);
 
-            if (success) XLog.Debug("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> succeed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.RawPath), atlas.RawPath);
+            if (success) XLog.Debug("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> succeeded.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.RawPath), atlas.RawPath);
             else XLog.Error("UIAtlasEditor.Import: import <a href=\"file:///{0}\">{1}</a> from <a href=\"file:///{2}\">{3}</a> failed.", Path.GetFullPath(path), path, Path.GetFullPath(atlas.RawPath), atlas.RawPath);
             return success;
         }
