@@ -4,10 +4,11 @@
 
 #if UNITY_INCLUDE_TESTS
 using NUnit.Framework;
-using EFramework.UnityUI.Editor;
 using UnityEditor;
 using UnityEngine;
 using EFramework.Utility;
+using EFramework.Editor;
+using EFramework.UnityUI.Editor;
 
 public class TestUICanvasEditor
 {
@@ -26,26 +27,26 @@ public class TestUICanvasEditor
     }
 
     [Test]
-    public void OnInit()
+    public void OnLoad()
     {
         // Arrange
         UICanvasEditor.icon = null;
         var originCount = EditorApplication.projectWindowItemOnGUI == null ? 0 : EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
 
         // Act
-        UICanvasEditor.OnInit();
+        (new UICanvasEditor() as XEditor.Event.Internal.OnEditorLoad).Process();
 
         // Assert
-        Assert.IsNotNull(UICanvasEditor.icon, "icon应当被加载到");
+        Assert.IsNotNull(UICanvasEditor.icon, "icon 应当被加载到。");
         var addedCount = EditorApplication.projectWindowItemOnGUI.GetInvocationList().Length;
-        Assert.AreEqual(originCount + 1, addedCount, "回调函数应当被注册");
+        Assert.AreEqual(originCount + 1, addedCount, "回调函数应当被注册。");
     }
 
     [Test]
     public void OnPost()
     {
         // Arrange
-        UICanvasEditor.OnInit();
+        (new UICanvasEditor() as XEditor.Event.Internal.OnEditorLoad).Process();
         var canvasObj = new GameObject("TestCanvas");
         canvasObj.AddComponent(typeof(Canvas));
 
@@ -56,7 +57,7 @@ public class TestUICanvasEditor
             PrefabUtility.SaveAsPrefabAsset(canvasObj, prefabPath);
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             var actualIcon = EditorGUIUtility.GetIconForObject(prefab);
-            Assert.AreEqual(UICanvasEditor.icon, actualIcon, "图标设置应当正确");
+            Assert.AreEqual(UICanvasEditor.icon, actualIcon, "图标设置应当正确。");
         }
         finally
         {

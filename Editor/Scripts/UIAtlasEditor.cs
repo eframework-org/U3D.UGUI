@@ -17,7 +17,7 @@ using EFramework.Editor;
 namespace EFramework.UnityUI.Editor
 {
     /// <summary>
-    /// UIAtlas 编辑器工具，用于管理和处理 Unity 精灵图集。
+    /// UIAtlasEditor 是 UIAtlas 组件的编辑器工具，用于管理和处理 Unity 精灵图集。
     /// </summary>
     /// <remarks>
     /// <code>
@@ -30,23 +30,32 @@ namespace EFramework.UnityUI.Editor
     /// </code>
     /// 更多信息请参考模块文档。
     /// </remarks>
-    public class UIAtlasEditor
+    public class UIAtlasEditor : XEditor.Event.Internal.OnEditorLoad
     {
+        /// <summary>
+        /// icon 是 UIAtlas 组件的自定义图标，用于优化资源的显示。
+        /// </summary>
         internal static Texture2D icon;
 
+        int XEditor.Event.Callback.Priority { get; }
+
+        bool XEditor.Event.Callback.Singleton { get => true; }
+
         /// <summary>
-        /// 编辑器初始化方法，加载图标并注册项目窗口绘制回调。
+        /// OnEditorLoad 事件回调处理了文件视图的绘制监听。
         /// </summary>
-        [InitializeOnLoadMethod]
-        internal static void OnInit()
+        void XEditor.Event.Internal.OnEditorLoad.Process(params object[] _)
         {
+            // 加载图标
             var pkg = XEditor.Utility.FindPackage();
             icon = AssetDatabase.LoadAssetAtPath<Texture2D>($"Packages/{pkg.name}/Editor/Resources/Icon/Atlas.png");
+
+            // 监听绘制
             if (icon) EditorApplication.projectWindowItemOnGUI += OnProjectWindowItemOnGUI;
         }
 
         /// <summary>
-        /// 项目窗口绘制回调，为 UIAtlas 预制体添加自定义图标。
+        /// OnProjectWindowItemOnGUI 是项目窗口绘制回调，为 UIAtlas 预制体添加自定义图标。
         /// </summary>
         /// <param name="guid">资源的 GUID</param>
         /// <param name="selectionRect">项目窗口中的绘制区域</param>
@@ -61,7 +70,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 创建图集的菜单项处理方法。
+        /// Create 创建图集的菜单项处理方法。
         /// </summary>
         [MenuItem("Assets/Create/2D/Sheet Atlas")]
         internal static void Create()
@@ -92,7 +101,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 创建 UIAtlas 预制体资源。
+        /// Create 创建 UIAtlas 预制体资源。
         /// </summary>
         /// <param name="atlasPath">UIAtlas 预制体的保存路径</param>
         /// <param name="rawPath">包含精灵图片的素材路径</param>
@@ -110,7 +119,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 资源后处理器，处理 UIAtlas 资源的导入和移动事件。
+        /// PostProcessor 是资源后处理器，处理 UIAtlas 资源的导入和移动事件。
         /// </summary>
         internal class PostProcessor : AssetPostprocessor
         {
@@ -142,7 +151,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 导入 UIAtlas 资源，使用 TexturePacker 处理图集。
+        /// Import 导入 UIAtlas 资源，使用 TexturePacker 处理图集。
         /// </summary>
         /// <param name="path">UIAtlas 资源路径</param>
         /// <returns>导入是否成功</returns>
@@ -232,48 +241,48 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 图集描述类，存储图集的元数据信息。
+        /// SheetDesc 是图集的描述类，用于存储图集的元数据信息。
         /// </summary>
         internal class SheetDesc
         {
             /// <summary>
-            /// 精灵元数据数组
+            /// MetaData 是精灵元数据的数组。
             /// </summary>
             public SpriteMetaData[] MetaData = null;
 
             /// <summary>
-            /// 图集宽度
+            /// Width 是图集的宽度。
             /// </summary>
             public int Width = -1;
 
             /// <summary>
-            /// 图集高度
+            /// Height 是图集的高度。
             /// </summary>
             public int Height = -1;
 
             /// <summary>
-            /// 是否启用轴心点
+            /// PivotPointsEnabled 表示是否启用轴心点。
             /// </summary>
             public bool PivotPointsEnabled = true;
 
             /// <summary>
-            /// 是否启用边界
+            /// BordersEnabled 表示是否启用边界。
             /// </summary>
             public bool BordersEnabled = false;
 
             /// <summary>
-            /// 是否启用多边形
+            /// PolygonsEnabled 表示是否启用多边形。
             /// </summary>
             public bool PolygonsEnabled = false;
 
             /// <summary>
-            /// Alpha 是否为透明度
+            /// AlphaIsTransparency 表示 Alpha 是否为透明。
             /// </summary>
             public bool AlphaIsTransparency = true;
         }
 
         /// <summary>
-        /// 解析 TexturePacker 生成的图集描述文件。
+        /// Parse 解析 TexturePacker 生成的图集描述文件。
         /// </summary>
         /// <param name="sheetFile">图集描述文件路径</param>
         /// <returns>解析后的图集描述对象，解析失败返回 null</returns>
@@ -393,7 +402,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 绘制图集纹理，将各个精灵拼接到一个图集中。
+        /// Draw 绘制图集纹理，将各个精灵拼接到一个图集中。
         /// </summary>
         /// <param name="sheetDesc">图集描述对象</param>
         /// <param name="rawPath">精灵图片所在的素材路径</param>
@@ -472,7 +481,7 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 拆分图集纹理为多个精灵。
+        /// Split 拆分图集纹理为多个精灵。
         /// </summary>
         /// <param name="sheetDesc">图集描述对象</param>
         /// <param name="textureFile">图集纹理文件路径</param>

@@ -4,15 +4,15 @@
 
 #if UNITY_INCLUDE_TESTS
 using NUnit.Framework;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.TestTools;
+using EFramework.Utility;
+using EFramework.Editor;
 using EFramework.UnityUI.Editor;
 using EFramework.UnityUI;
-using UnityEditor;
-using EFramework.Utility;
-using UnityEngine;
-using System.IO;
-using UnityEngine.TestTools;
-using System.Text.RegularExpressions;
-using EFramework.Editor;
 
 public class TestUIAtlasEditor
 {
@@ -41,19 +41,19 @@ public class TestUIAtlasEditor
     }
 
     [Test]
-    public void OnInit()
+    public void OnLoad()
     {
         // Arrange
         UIAtlasEditor.icon = null;
         var originCount = EditorApplication.projectWindowItemOnGUI == null ? 0 : EditorApplication.projectWindowItemOnGUI.GetInvocationList()?.Length ?? 0;
 
         // Act
-        UIAtlasEditor.OnInit();
+        (new UIAtlasEditor() as XEditor.Event.Internal.OnEditorLoad).Process();
 
         // Assert
-        Assert.IsNotNull(UIAtlasEditor.icon, "icon应当被加载到");
+        Assert.IsNotNull(UIAtlasEditor.icon, "icon 应当被加载到。");
         var addedCount = EditorApplication.projectWindowItemOnGUI.GetInvocationList().Length;
-        Assert.AreEqual(originCount + 1, addedCount, "回调函数应当被注册");
+        Assert.AreEqual(originCount + 1, addedCount, "回调函数应当被注册。");
     }
 
     [Test]
@@ -64,13 +64,13 @@ public class TestUIAtlasEditor
         LogAssert.ignoreFailingMessages = false;    // 恢复正常行为
 
         // Assert
-        Assert.IsNotNull(asset, "应该成功创建资产");
+        Assert.IsNotNull(asset, "应该成功创建资产。");
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
-        Assert.IsNotNull(prefab, "预制体应该存在");
+        Assert.IsNotNull(prefab, "预制体应该存在。");
 
         var atlas = prefab.GetComponent<UIAtlas>();
-        Assert.IsNotNull(atlas, "预制体应该包含UIAtlas组件");
-        Assert.AreEqual(TestRawPath, atlas.RawPath, "RawPath应该被正确设置");
+        Assert.IsNotNull(atlas, "预制体应该包含 UIAtlas 组件。");
+        Assert.AreEqual(TestRawPath, atlas.RawPath, "RawPath 应该被正确设置。");
     }
 
     [Test]
@@ -80,14 +80,14 @@ public class TestUIAtlasEditor
                                bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin"),
                                args: new string[] { "--version" });
         task.Wait();
-        Assert.IsTrue(task.Result.Code == 0, "TexturePacker应当安装成功");
+        Assert.IsTrue(task.Result.Code == 0, "TexturePacker 应当安装成功。");
 
         // 测试导入不存在的图集
         LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: null atlas at: .*"));
         // 使用一个不存在的路径
         string nonExistentPath = "Assets/NonExistent/Atlas.prefab";
         bool result = UIAtlasEditor.Import(nonExistentPath);
-        Assert.IsFalse(result, "当图集不存在时应返回false");
+        Assert.IsFalse(result, "当图集不存在时应返回 false。");
 
         // 测试导入不存在的RawPath
         LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: raw path doesn't exist: .*"));
@@ -106,9 +106,9 @@ public class TestUIAtlasEditor
         // 验证预制体是否包含精灵引用
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
         var prefaAtlas = prefab.GetComponent<UIAtlas>();
-        Assert.IsNotNull(prefaAtlas, "预制体应该包含UIAtlas组件");
+        Assert.IsNotNull(prefaAtlas, "预制体应该包含 UIAtlas 组件。");
         var atlasDir = Path.GetDirectoryName(TestAtlas);
-        Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png应当被生成");
+        Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png 应当被生成。");
     }
 }
 #endif

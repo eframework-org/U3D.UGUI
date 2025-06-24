@@ -10,7 +10,7 @@ using EFramework.Editor;
 namespace EFramework.UnityUI.Editor
 {
     /// <summary>
-    /// Unity Canvas 编辑器工具，为 Canvas 组件提供自定义图标和项目视图集成。
+    /// UICanvasEditor 是 UICanvas 组件的编辑器工具，提供了自定义图标和项目视图集成。
     /// </summary>
     /// <remarks>
     /// <code>
@@ -21,23 +21,32 @@ namespace EFramework.UnityUI.Editor
     /// </code>
     /// 更多信息请参考模块文档。
     /// </remarks>
-    public class UICanvasEditor
+    public class UICanvasEditor : XEditor.Event.Internal.OnEditorLoad
     {
+        /// <summary>
+        /// icon 是 UICanvas 组件的自定义图标，用于优化资源的显示。
+        /// </summary>
         internal static Texture2D icon;
 
+        int XEditor.Event.Callback.Priority { get; }
+
+        bool XEditor.Event.Callback.Singleton { get => true; }
+
         /// <summary>
-        /// 编辑器初始化方法，加载图标并注册项目窗口绘制回调。
+        /// OnEditorLoad 事件回调处理了文件视图的绘制监听。
         /// </summary>
-        [InitializeOnLoadMethod]
-        internal static void OnInit()
+        void XEditor.Event.Internal.OnEditorLoad.Process(params object[] _)
         {
+            // 加载图标
             var pkg = XEditor.Utility.FindPackage();
             icon = AssetDatabase.LoadAssetAtPath<Texture2D>($"Packages/{pkg.name}/Editor/Resources/Icon/Canvas.png");
+
+            // 监听绘制
             if (icon) EditorApplication.projectWindowItemOnGUI += OnProjectWindowItemOnGUI;
         }
 
         /// <summary>
-        /// 项目窗口绘制回调，为 Canvas 预制体添加自定义图标。
+        /// OnProjectWindowItemOnGUI 是项目窗口绘制的回调，为 UICanvas 预制体添加自定义图标。
         /// </summary>
         /// <param name="guid">资源的 GUID</param>
         /// <param name="selectionRect">项目窗口中的绘制区域</param>
@@ -52,12 +61,12 @@ namespace EFramework.UnityUI.Editor
         }
 
         /// <summary>
-        /// 资源后处理器，处理 Canvas 资源的导入和移动事件。
+        /// PostProcessor 是资源后处理器，处理 Canvas 资源的导入和移动事件。
         /// </summary>
         internal class PostProcessor : AssetPostprocessor
         {
             /// <summary>
-            /// 处理所有资源的后处理事件，为 Canvas 对象设置图标。
+            /// OnPostprocessAllAssets 处理所有资源的后处理事件，为 Canvas 对象设置图标。
             /// </summary>
             /// <param name="importedAssets">导入的资源路径</param>
             /// <param name="deletedAssets">删除的资源路径</param>
