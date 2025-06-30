@@ -11,7 +11,7 @@ on:
         type: boolean
         default: false
         required: false
-      confirm:
+      confirm_repo:
         description: '请输入仓库名称（owner/repo）以确认发布'
         required: true
 
@@ -27,9 +27,9 @@ jobs:
       release_content: ${{ steps.parse_changelog.outputs.release_content }}
     steps:
       - name: 验证仓库名称
-        if: github.event.inputs.confirm != github.repository
+        if: github.event.inputs.confirm_repo != github.repository
         run: |
-          echo "仓库名称不匹配，输入: ${{ github.event.inputs.confirm }}，期望: ${{ github.repository }}"
+          echo "仓库名称不匹配，输入: ${{ github.event.inputs.confirm_repo }}，期望: ${{ github.repository }}"
           exit 1
 
       - name: 检出仓库代码
