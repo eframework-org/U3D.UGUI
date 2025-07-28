@@ -1,6 +1,0 @@
-.github*
-.vscode*
-.gitignore*
-.gitattributes*
-Tests/
-Tests.meta
