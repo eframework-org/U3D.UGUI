@@ -272,7 +272,7 @@ public class TestUIUtility
         var rawImage = rootObj.AddComponent<RawImage>();
 
         // 设置一个本地测试URI
-        var testUri = "file://" + XFile.PathJoin(XEditor.Utility.FindPackage().resolvedPath, "Tests/Runtime/RawAssets/Square.png");
+        var testUri = "file://" + XFile.PathJoin(XEnv.ProjectPath, "Assets/Tests/Runtime/RawAssets/Square.png");
 
         // 测试直接设置图片
         var result1 = rootObj.SetRawImage(testUri, false);

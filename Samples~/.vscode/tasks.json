@@ -1,0 +1,114 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Open Unity Project",
+            "detail": "打开 Unity 项目",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/.vscode"
+            },
+            "args": [
+                "../",
+                "-accept-apiupdate"
+            ],
+            "windows": {
+                "command": "./unity.sh",
+                "options": {
+                    "shell": {
+                        "executable": "C:\\Program Files\\Git\\bin\\bash.exe",
+                        "args": [
+                            "-c"
+                        ]
+                    }
+                }
+            },
+            "linux": {
+                "command": "./unity.sh"
+            },
+            "osx": {
+                "command": "./unity.sh"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": [
+                {
+                    "pattern": {
+                        "regexp": "^$"
+                    },
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "isBackground": true
+        },
+        {
+            "label": "Run Unity Tests",
+            "detail": "运行 Unity 测试",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/.vscode"
+            },
+            "args": [
+                "../",
+                "-accept-apiupdate",
+                "-runTests",
+                "-testPlatform",
+                "${input:testMode}",
+                "-testResults",
+                "./Library/Test.${input:testMode}.Reports/Results.xml"
+            ],
+            "windows": {
+                "command": "./unity.sh",
+                "options": {
+                    "shell": {
+                        "executable": "C:\\Program Files\\Git\\bin\\bash.exe",
+                        "args": [
+                            "-c"
+                        ]
+                    }
+                }
+            },
+            "linux": {
+                "command": "./unity.sh"
+            },
+            "osx": {
+                "command": "./unity.sh"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^$",
+                    "endsPattern": "^$"
+                }
+            },
+            "isBackground": true
+        }
+    ],
+    "inputs": [
+        {
+            "id": "testMode",
+            "type": "pickString",
+            "description": "Select test mode",
+            "options": [
+                "PlayMode",
+                "EditMode"
+            ],
+            "default": "PlayMode"
+        }
+    ]
+}

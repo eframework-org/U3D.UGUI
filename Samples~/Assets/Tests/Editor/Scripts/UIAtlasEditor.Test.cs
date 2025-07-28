@@ -24,7 +24,7 @@ public class TestUIAtlasEditor
     [OneTimeSetUp]
     public void Init()
     {
-        TestRawAssets = XFile.PathJoin(XEditor.Utility.FindPackage().resolvedPath, "Tests/Runtime/RawAssets");
+        TestRawAssets = XFile.PathJoin(XEnv.ProjectPath, "Assets/Tests/Runtime/RawAssets");
     }
 
     [SetUp]

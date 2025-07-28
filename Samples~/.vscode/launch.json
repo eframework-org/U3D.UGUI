@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Open in Unity",
+            "type": "node",
+            "request": "attach",
+            "preLaunchTask": "Open Unity Project"
+        },
+        {
+            "name": "Attach to Unity",
+            "type": "vstuc",
+            "request": "attach"
+        },
+        {
+            "name": "Test in Unity",
+            "type": "node",
+            "request": "attach",
+            "preLaunchTask": "Run Unity Tests"
+        }
+    ]
+}
