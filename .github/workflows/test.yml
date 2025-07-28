@@ -53,7 +53,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - Package
+          - Package/Samples~
         unityVersion: ${{ fromJson(github.event.inputs.unity_versions || inputs.unity_versions) }}
         testMode: ${{ fromJson(github.event.inputs.test_modes || inputs.test_modes) }}
     outputs:
