@@ -4,8 +4,6 @@
 
 using System.IO;
 using System.Linq;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
@@ -410,74 +408,72 @@ namespace EFramework.UnityUI.Editor
         /// <param name="isTrim">是否裁剪透明边缘</param>
         internal static void Draw(SheetDesc sheetDesc, string rawPath, string textureFile, bool isTrim = true)
         {
-            static int getEdge(Bitmap bitmap, bool isStart, bool isHorizontal, bool isTrim = true)
+            static int GetEdge(Texture2D tex, bool isStart, bool isHorizontal, bool isTrim)
             {
-                if (!isTrim)
+                if (!isTrim) return isStart ? 0 : (isHorizontal ? tex.width - 1 : tex.height - 1);
+
+                var startEdge = isStart ? 0 : (isHorizontal ? tex.width - 1 : tex.height - 1);
+                var endEdge = isStart ? (isHorizontal ? tex.width : tex.height) : -1;
+                var step = isStart ? 1 : -1;
+
+                for (var i = startEdge; i != endEdge; i += step)
                 {
-                    if (isStart) return 0;
-                    else return isHorizontal ? bitmap.Width - 1 : bitmap.Height - 1;
-                }
-                else
-                {
-                    int startEdge, endEdge, count;
-                    if (isStart)
+                    var limit = isHorizontal ? tex.height : tex.width;
+                    for (var j = 0; j < limit; j++)
                     {
-                        startEdge = 0;
-                        endEdge = isHorizontal ? bitmap.Width - 1 : bitmap.Height - 1;
-                        count = 1;
-                    }
-                    else
-                    {
-                        startEdge = isHorizontal ? bitmap.Width - 1 : bitmap.Height - 1;
-                        endEdge = 0;
-                        count = -1;
-                    }
-                    for (int i = startEdge; i != endEdge; i += count)
-                    {
-                        int limit = isHorizontal ? bitmap.Height : bitmap.Width;
-                        for (int j = 0; j < limit; j++)
-                        {
-                            int x = isHorizontal ? i : j;
-                            int y = isHorizontal ? j : i;
-                            if (bitmap.GetPixel(x, y).ToArgb() != 0)
-                            {
-                                return i;
-                            }
-                        }
+                        var x = isHorizontal ? i : j;
+                        var y = isHorizontal ? (tex.height - 1 - j) : i; // Y 坐标翻转，只在水平扫描时
+                        if (tex.GetPixel(x, y).a > 0.01f) return i; // 找到非透明边缘
                     }
                 }
+
                 return 0;
             }
 
             var texWidth = sheetDesc.Width;
             var texHeight = sheetDesc.Height;
+            var atlas = new Texture2D(texWidth, texHeight, TextureFormat.RGBA32, false);
 
-            using var texBitmap = new Bitmap(texWidth, texHeight);
+            // 初始化为透明
+            var empty = new Color32[texWidth * texHeight];
+            for (var i = 0; i < empty.Length; i++) empty[i] = new Color32(0, 0, 0, 0);
+            atlas.SetPixels32(empty);
+
             foreach (var smd in sheetDesc.MetaData)
             {
-                var spritePath = XFile.PathJoin(rawPath, smd.name + ".png");
-                if (!XFile.HasFile(spritePath)) spritePath = Path.ChangeExtension(spritePath, ".jpg");
+                var spritePath = Path.Combine(rawPath, smd.name + ".png");
+                if (!File.Exists(spritePath)) spritePath = Path.ChangeExtension(spritePath, ".jpg");
+                if (!File.Exists(spritePath)) continue;
 
-                using var spriteBmp = new Bitmap(Image.FromFile(spritePath));
-                var startX = getEdge(spriteBmp, true, true, isTrim);
-                var endX = getEdge(spriteBmp, false, true, isTrim);
-                var startY = getEdge(spriteBmp, true, false, isTrim);
-                var endY = getEdge(spriteBmp, false, false, isTrim);
+                var imgBytes = File.ReadAllBytes(spritePath);
+                Texture2D spriteTex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                spriteTex.LoadImage(imgBytes);
 
-                for (int i = startX; i <= endX; i++)
+                var startX = GetEdge(spriteTex, true, true, isTrim);
+                var endX = GetEdge(spriteTex, false, true, isTrim);
+                var startY = GetEdge(spriteTex, true, false, isTrim);
+                var endY = GetEdge(spriteTex, false, false, isTrim);
+
+                for (var i = startX; i <= endX; i++)
                 {
-                    for (int j = startY; j <= endY; j++)
+                    for (var j = startY; j <= endY; j++)
                     {
-                        texBitmap.SetPixel(
-                            i - startX + (int)smd.rect.x,
-                            j - startY + (int)(texHeight - smd.rect.y - smd.rect.height),
-                            spriteBmp.GetPixel(i, j)
-                        );
+                        Color color = spriteTex.GetPixel(i, j);
+                        var dstX = i - startX + (int)smd.rect.x;
+                        var dstY = (int)(smd.rect.y + (j - startY));
+                        if (dstX >= 0 && dstX < texWidth && dstY >= 0 && dstY < texHeight)
+                        {
+                            atlas.SetPixel(dstX, dstY, color);
+                        }
                     }
                 }
             }
 
-            texBitmap.Save(textureFile, ImageFormat.Png);
+            atlas.Apply();
+
+            // 保存为 PNG
+            var pngBytes = atlas.EncodeToPNG();
+            File.WriteAllBytes(textureFile, pngBytes);
         }
 
         /// <summary>

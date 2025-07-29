@@ -22,8 +22,6 @@ namespace EFramework.UnityUI
     ///     使用图集打包功能需要安装以下依赖：
     ///     1. 下载安装 [TexturePacker](https://www.codeandweb.com/texturepacker) 软件并**同意**许可协议
     ///     2. Docker 环境使用可参考 TexturePacker 的[ CI 教程](https://www.codeandweb.com/texturepacker/documentation/docker-ci)
-    ///     3. Linux 环境需要安装 `apt-get install -y libgdiplus` 库
-    ///     4. macOS 环境需要安装 `brew install mono-libgdiplus` 库
     /// 
     /// 2. 创建图集
     /// 
@@ -42,12 +40,13 @@ namespace EFramework.UnityUI
     /// 4. 图集使用
     /// 
     ///     // 获取图集组件
-    ///     UIAtlas atlas = GetComponent&lt;UIAtlas&gt;();
+    ///     var atlas = GetComponent&lt;UIAtlas&gt;();
+    /// 
     ///     // 或者加载图集资源
-    ///     UIAtlas atlas = Resources.Load&lt;UIAtlas&gt;("UI/CommonAtlas");
+    ///     var atlas = Resources.Load&lt;UIAtlas&gt;("UI/CommonAtlas");
     /// 
     ///     // 通过名称获取 Sprite
-    ///     Sprite iconSprite = atlas.GetSprite("IconName");
+    ///     var iconSprite = atlas.GetSprite("IconName");
     /// 
     ///     // 使用获取的 Sprite
     ///     image.sprite = iconSprite;

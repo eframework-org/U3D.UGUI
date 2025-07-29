@@ -1,5 +1,9 @@
 # 更新记录
 
+## [0.0.4] - 
+### 变更
+- 重构 UIAtlasEditor 绘制图集的实现（System.Drawing -> UnityEngine.Texture2D）
+
 ## [0.0.3] - 2025-06-24
 ### 变更
 - 更新依赖库版本

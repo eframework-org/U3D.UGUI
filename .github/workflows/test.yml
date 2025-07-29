@@ -93,21 +93,6 @@ jobs:
           cat > Dockerfile << EOF
           FROM unityci/editor:ubuntu-${{ matrix.unityVersion }}-linux-il2cpp-3
 
-          # 安装必要的依赖
-          RUN apt-get update && apt-get install -y \
-              wget \
-              libegl1-mesa \
-              libgl1-mesa-glx \
-              libfontconfig \
-              libx11-6 \
-              libxkbcommon-x11-0 \
-              libqt5core5a \
-              libqt5gui5 \
-              libqt5widgets5 \
-              libqt5network5 \
-              libgdiplus \
-              && rm -rf /var/lib/apt/lists/*
-
           # 下载并安装 TexturePacker
           RUN wget https://www.codeandweb.com/download/texturepacker/7.6.0/TexturePacker-7.6.0.deb \
               && dpkg -i TexturePacker-7.6.0.deb || true \

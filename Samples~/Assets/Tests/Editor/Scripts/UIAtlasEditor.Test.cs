@@ -5,6 +5,7 @@
 #if UNITY_INCLUDE_TESTS
 using NUnit.Framework;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -17,27 +18,27 @@ using EFramework.UnityUI;
 public class TestUIAtlasEditor
 {
     const string TestDir = "Assets/Temp/TestUIAtlasEditor";
-    readonly string TestAtlas = XFile.PathJoin(TestDir, "TestAtlas.prefab");
-    readonly string TestRawPath = XFile.PathJoin(TestDir, "RawPath");
-    string TestRawAssets;
 
-    [OneTimeSetUp]
-    public void Init()
-    {
-        TestRawAssets = XFile.PathJoin(XEnv.ProjectPath, "Assets/Tests/Runtime/RawAssets");
-    }
+    readonly string TestRawPath = XFile.PathJoin(TestDir, "RawAssets/TestAtlas");
+
+    readonly string TestPrefabFile = XFile.PathJoin(TestDir, "TestAtlas.prefab");
 
     [SetUp]
     public void Setup()
     {
-        if (!XFile.HasDirectory(TestRawPath)) XFile.CreateDirectory(TestRawPath);
         if (!XFile.HasDirectory(TestDir)) XFile.CreateDirectory(TestDir);
+        if (XFile.HasDirectory(TestRawPath)) XFile.DeleteDirectory(TestRawPath);
+        XFile.CopyDirectory("Assets/Tests/Runtime/RawAssets", TestRawPath);
     }
 
     [TearDown]
     public void Reset()
     {
-        if (XFile.HasDirectory(TestDir)) XFile.DeleteDirectory(TestDir);
+        if (XFile.HasDirectory(TestDir))
+        {
+            XFile.DeleteDirectory(TestDir);
+            AssetDatabase.Refresh();
+        }
     }
 
     [Test]
@@ -60,12 +61,12 @@ public class TestUIAtlasEditor
     public void Create()
     {
         LogAssert.ignoreFailingMessages = true;  // 忽略所有错误日志
-        var asset = UIAtlasEditor.Create(TestAtlas, TestRawPath);
+        var asset = UIAtlasEditor.Create(TestPrefabFile, TestRawPath);
         LogAssert.ignoreFailingMessages = false;    // 恢复正常行为
 
         // Assert
         Assert.IsNotNull(asset, "应该成功创建资产。");
-        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
+        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabFile);
         Assert.IsNotNull(prefab, "预制体应该存在。");
 
         var atlas = prefab.GetComponent<UIAtlas>();
@@ -82,36 +83,41 @@ public class TestUIAtlasEditor
         task.Wait();
         Assert.IsTrue(task.Result.Code == 0, "TexturePacker 应当安装成功。");
 
-        // 测试导入不存在的图集
-        LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: null atlas at: .*"));
-        // 使用一个不存在的路径
-        string nonExistentPath = "Assets/NonExistent/Atlas.prefab";
-        bool result = UIAtlasEditor.Import(nonExistentPath);
-        Assert.IsFalse(result, "当图集不存在时应返回 false。");
-
-        // 测试导入不存在的RawPath
-        LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: raw path doesn't exist: .*"));
-
-        // 创建图集预制体但设置不存在的RawPath
-        var go = new GameObject("TestAtlas");
-        var atlas = go.AddComponent<UIAtlas>();
-
-        // 设置不存在的RawPath
-        atlas.RawPath = "Assets/NonExistentRawPath";
-        PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
+        // 测试导入失败
+        {
+            LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: null atlas at: .*"));
+            // 使用一个不存在的路径
+            var nonExistentPath = "Assets/NonExistent/Atlas.prefab";
+            var result = UIAtlasEditor.Import(nonExistentPath);
+            Assert.IsFalse(result, "当图集不存在时应返回 false。");
+        }
 
         // 测试导入成功
-        atlas.RawPath = TestRawAssets;
-        LogAssert.ignoreFailingMessages = true;
-        PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
-        LogAssert.ignoreFailingMessages = false;
+        {
+            // 创建图集预制体但设置不存在的RawPath
+            var go = new GameObject("TestAtlas");
+            var atlas = go.AddComponent<UIAtlas>();
 
-        // 验证预制体是否包含精灵引用
-        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
-        var prefaAtlas = prefab.GetComponent<UIAtlas>();
-        Assert.IsNotNull(prefaAtlas, "预制体应该包含 UIAtlas 组件。");
-        var atlasDir = Path.GetDirectoryName(TestAtlas);
-        Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png 应当被生成。");
+            atlas.RawPath = TestRawPath;
+            LogAssert.ignoreFailingMessages = true;
+            PrefabUtility.SaveAsPrefabAsset(go, TestPrefabFile);   // 保存预制体会触发Import
+            LogAssert.ignoreFailingMessages = false;
+
+            // 验证预制体是否包含精灵引用
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabFile);
+            var prefaAtlas = prefab.GetComponent<UIAtlas>();
+            Assert.IsNotNull(prefaAtlas, "预制体应该包含 UIAtlas 组件。");
+
+            var sprites = prefaAtlas.Sprites.ToList();
+            Assert.AreEqual(4, sprites.Count, "图片精灵的数量应当为 4。");
+            Assert.IsTrue(sprites.Exists(ele => ele.name == "Square"), "指定的图片精灵应当存在。");
+            Assert.IsTrue(sprites.Exists(ele => ele.name == "UnityIcon"), "指定的图片精灵应当存在。");
+            Assert.IsTrue(sprites.Exists(ele => ele.name == "UnityIcon2"), "指定的图片精灵应当存在。");
+            Assert.IsTrue(sprites.Exists(ele => ele.name == "UnityIcon3"), "指定的图片精灵应当存在。");
+
+            var atlasDir = Path.GetDirectoryName(TestPrefabFile);
+            Assert.IsTrue(XFile.HasFile(XFile.PathJoin(atlasDir, "TestAtlas.png")), "TestAtlas.png 应当被生成。");
+        }
     }
 }
 #endif

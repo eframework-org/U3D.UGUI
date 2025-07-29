@@ -19,8 +19,6 @@ UIAtlas 是一个用于管理 Sprite 资源的组件，提供了 TexturePacker �
 
 1. 下载安装 [TexturePacker](https://www.codeandweb.com/texturepacker) 软件并**同意**许可协议
 2. Docker 环境使用可参考 TexturePacker 的[ CI 教程](https://www.codeandweb.com/texturepacker/documentation/docker-ci)
-3. Linux 环境需要安装 `apt-get install -y libgdiplus` 库
-4. macOS 环境需要安装 `brew install mono-libgdiplus` 库
 
 ### 2. 创建图集
 
@@ -42,12 +40,13 @@ UIAtlas 是一个用于管理 Sprite 资源的组件，提供了 TexturePacker �
 
 ```csharp
 // 获取图集组件
-UIAtlas atlas = GetComponent<UIAtlas>();
+var atlas = GetComponent<UIAtlas>();
+
 // 或者加载图集资源
-UIAtlas atlas = Resources.Load<UIAtlas>("UI/CommonAtlas");
+var atlas = Resources.Load<UIAtlas>("UI/CommonAtlas");
 
 // 通过名称获取 Sprite
-Sprite iconSprite = atlas.GetSprite("IconName");
+var iconSprite = atlas.GetSprite("IconName");
 
 // 使用获取的 Sprite
 image.sprite = iconSprite;
