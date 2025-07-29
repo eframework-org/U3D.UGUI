@@ -77,7 +77,7 @@ public class TestUIAtlasEditor
     public void Import()
     {
         var task = XEditor.Cmd.Run(
-                               bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin"),
+                               bin: XEditor.Cmd.Find("TexturePacker", "C:/Program Files/CodeAndWeb/TexturePacker/bin", "/Applications/TexturePacker.app/Contents/MacOS"),
                                args: new string[] { "--version" });
         task.Wait();
         Assert.IsTrue(task.Result.Code == 0, "TexturePacker 应当安装成功。");
@@ -91,9 +91,11 @@ public class TestUIAtlasEditor
 
         // 测试导入不存在的RawPath
         LogAssert.Expect(LogType.Error, new Regex(@"UIAtlasEditor\.Import: raw path doesn't exist: .*"));
+
         // 创建图集预制体但设置不存在的RawPath
         var go = new GameObject("TestAtlas");
         var atlas = go.AddComponent<UIAtlas>();
+
         // 设置不存在的RawPath
         atlas.RawPath = "Assets/NonExistentRawPath";
         PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
@@ -103,6 +105,7 @@ public class TestUIAtlasEditor
         LogAssert.ignoreFailingMessages = true;
         PrefabUtility.SaveAsPrefabAsset(go, TestAtlas);   // 保存预制体会触发Import
         LogAssert.ignoreFailingMessages = false;
+
         // 验证预制体是否包含精灵引用
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestAtlas);
         var prefaAtlas = prefab.GetComponent<UIAtlas>();
